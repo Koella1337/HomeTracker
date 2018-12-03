@@ -18,4 +18,8 @@ public class ActivitySwitcher {
     public static void openItemListActivity(Context current){
         current.startActivity(new Intent(current,ItemListActivity.class));
     }
+
+    public static void openScanActivity(Context current){
+        current.startActivity(new Intent(current,FullscreenActivity.class));
+    }
 }

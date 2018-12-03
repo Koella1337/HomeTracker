@@ -4,6 +4,11 @@
     tools:context="hometracker.app.MainActivity">
 
 
-
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@drawable/ic_options"/>
 
 </menu>
