@@ -35,7 +35,7 @@ public class StartMenuActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 Object o = lv.getItemAtPosition(position);
                 String str=(String)o;//As you are using Default String Adapter
-                Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT).show();
                 ActivitySwitcher.openGroupActivity(getApplicationContext());
             }
         });

@@ -35,9 +35,10 @@ public class GroupActivity extends AppCompatActivity {
 
             @Override
             public void onGroupExpand(int groupPosition) {
+                /*
                 Toast.makeText(getApplicationContext(),
                         expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
             }
         });
 
@@ -45,9 +46,11 @@ public class GroupActivity extends AppCompatActivity {
 
             @Override
             public void onGroupCollapse(int groupPosition) {
+                /*
                 Toast.makeText(getApplicationContext(),
                         expandableListTitle.get(groupPosition) + " List Collapsed.",
                         Toast.LENGTH_SHORT).show();
+                        */
             }
         });
 
@@ -56,7 +59,7 @@ public class GroupActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 ActivitySwitcher.openItemListActivity(getApplicationContext());
-
+/*
                 Toast.makeText(
                         getApplicationContext(),
                         expandableListTitle.get(groupPosition)
@@ -65,6 +68,7 @@ public class GroupActivity extends AppCompatActivity {
                                 expandableListTitle.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();
+                */
                 return false;
             }
         });

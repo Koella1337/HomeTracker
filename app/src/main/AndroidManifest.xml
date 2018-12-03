@@ -26,6 +26,10 @@
             android:name=".ItemListActivity"
             android:label="@string/title_activity_room"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
