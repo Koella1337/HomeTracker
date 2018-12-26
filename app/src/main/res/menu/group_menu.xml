@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- SEARCH -->
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search_label"
+        app:showAsAction="always"></item>
+
+    <!-- CAMERA -->
+    <item
+        android:id="@+id/action_camera"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/camera_label"
+        app:showAsAction="always"></item>
+
+    <!-- PROFILE -->
+    <item
+        android:id="@+id/action_profile"
+        app:showAsAction="never"
+        android:title="@string/profile_label">
+    </item>
+
+    <!-- SETTINGS -->
+    <item
+        android:id="@+id/action_settings"
+        app:showAsAction="never"
+        android:title="@string/settings_label">
+    </item>
+</menu>

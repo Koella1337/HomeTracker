@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="group_selection_label">Gruppenauswahl</string>
+    <string name="profile_label">Profil</string>
+    <string name="settings_label">Einstellungen</string>
+    <string name="group_label">Gruppe</string>
+    <string name="camera_label">Kamera</string>
+    <string name="search_label">Suche</string>
+    <string name="create_group_label">Gruppe erstellen ...</string>
+</resources>

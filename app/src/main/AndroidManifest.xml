@@ -1,44 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="hometracker.app">
+    package="at.hometracker">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartMenuActivity"
-            android:label="@string/title_activity_start_menu"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".app.GroupSelectionActivity"
+            android:label="@string/group_selection_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".GroupActivity"
-            android:label="@string/title_activity_group"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ItemListActivity"
-            android:label="@string/title_activity_room"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Settings"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ScanActivity"
-            android:label="@string/title_activity_scan"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/FullscreenTheme"></activity>
+        <activity android:name=".app.GroupActivity"/>
     </application>
 
 </manifest>
