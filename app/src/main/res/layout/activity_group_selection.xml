@@ -6,8 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".app.GroupSelectionActivity">
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="292dp"
+        android:onClick="openDatabaseActivity"
+        android:text="database testing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_groupselection" />
+
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/toolbar_groupselection"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
@@ -19,11 +30,11 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="40dp"
-        android:text="open group activity"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="148dp"
         android:onClick="openGroupActivity"
+        android:text="open group activity"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_groupselection" />
 
 </android.support.constraint.ConstraintLayout>

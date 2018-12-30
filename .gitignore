@@ -1,3 +1,7 @@
+# Custom ignores
+Constants.java
+DatabaseMethod.java
+
 # Built application files
 *.apk
 *.ap_
