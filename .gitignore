@@ -1,6 +1,7 @@
 # Custom ignores
 Constants.java
 DatabaseMethod.java
+PasswordUtils.java
 
 # Built application files
 *.apk

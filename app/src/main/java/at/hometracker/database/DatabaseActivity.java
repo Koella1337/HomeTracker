@@ -42,4 +42,24 @@ public class DatabaseActivity extends AppCompatActivity {
         Log.i("db", DatabaseMethod.INSERT_USER.name() + " result = " + result);
     }
 
+    public void testPw(View view) {
+        String pw = "X";
+
+        SecurePassword secPw = PasswordUtils.generateSecurePassword(pw);
+
+        System.out.printf("Salt Len: %d --> %s%n", secPw.salt.length(), secPw.salt);
+        System.out.printf("PW Len: %d --> %s%n", secPw.hashedPw.length(), secPw.hashedPw);
+
+        System.out.println();
+
+        System.out.printf("Validating \"%s\": %b%n", pw, PasswordUtils.validatePassword(pw, secPw));
+
+        System.out.println();
+
+        System.out.printf("Validating \"%s\": %b%n", "test123_lo", PasswordUtils.validatePassword("test123_lo", secPw));
+        System.out.printf("Validating \"%s\": %b%n", "test123-lol", PasswordUtils.validatePassword("test123-lol", secPw));
+        System.out.printf("Validating \"%s\": %b%n", "test123_loL", PasswordUtils.validatePassword("test123_loL", secPw));
+        System.out.printf("Validating \"%s\": %b%n", "x", PasswordUtils.validatePassword("x", secPw));
+    }
+
 }

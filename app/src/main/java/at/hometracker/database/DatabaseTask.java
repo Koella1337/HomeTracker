@@ -51,7 +51,7 @@ public class DatabaseTask extends AsyncTask<String, Void, String> {
 
         postBuilder.append(URLEncoder.encode("authkey", "UTF-8"));
         postBuilder.append(Constants.HTTPPOST_KEYVALUE_SEPARATOR);
-        postBuilder.append(URLEncoder.encode(Constants.AUTHKEY, "UTF-8"));
+        postBuilder.append(URLEncoder.encode(Constants.PHP_AUTHKEY, "UTF-8"));
 
         postBuilder.append(Constants.HTTPPOST_PARAM_SEPARATOR);
 
