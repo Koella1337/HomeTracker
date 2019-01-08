@@ -1,93 +1,71 @@
 package at.hometracker.database;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.TextView;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
 import at.hometracker.app.Constants;
 
 //AsyncTask<Params, Progress, Result>
-public class DatabaseTask extends AsyncTask<String, Void, String> {
+public class DatabaseTask extends AsyncTask<Object, Void, String> {
+
+    @SuppressLint("StaticFieldLeak")
+    private final TextView textView;
 
     private final DatabaseMethod methodToExecute;
-    private URLConnection conn;
 
-    public DatabaseTask(DatabaseMethod methodToExecute) {
+    public DatabaseTask(DatabaseMethod methodToExecute, TextView textViewToUpdate) {
         this.methodToExecute = methodToExecute;
+        this.textView = textViewToUpdate;
     }
 
     @Override
-    protected String doInBackground(String... additionalParams) {
+    protected String doInBackground(Object... additionalParams) {
+        MultipartPost post = new MultipartPost();
         try {
-            openConnection();
-            sendPost(additionalParams);
-            return readResult();
+            post.addFormField("authkey", Constants.PHP_AUTHKEY);
+            post.addFormField("method", methodToExecute.getPhpMethodName());
+
+            for (int i = 0; i < additionalParams.length; i++) {
+                Object param = additionalParams[i];
+
+                if (param instanceof String) {
+                    post.addFormField("param" + i, param.toString());
+                }
+                else if (param instanceof InputStream) {
+                    post.addFilePart("param" + i, (InputStream) param);
+                }
+                else {
+                    throw new IllegalArgumentException("Invalid (additional) param type for DatabaseTask!");
+                }
+            }
+
+            return post.finish();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    /**
-     * Opens a connection. ({@link URLConnection}).
-     * @throws IOException
-     */
-    private void openConnection() throws IOException {
-        //Address of PHP interface that connects to MySQL database
-        URL url = new URL(Constants.PHP_URL);
-        conn = url.openConnection();
-        conn.setDoOutput(true);
-    }
-
-    private void sendPost(String... params) throws IOException {
-        //postBuilder: authkey = <authkey> & method = <phpMethodName>
-        StringBuilder postBuilder = new StringBuilder();
-
-        postBuilder.append(URLEncoder.encode("authkey", "UTF-8"));
-        postBuilder.append(Constants.HTTPPOST_KEYVALUE_SEPARATOR);
-        postBuilder.append(URLEncoder.encode(Constants.PHP_AUTHKEY, "UTF-8"));
-
-        postBuilder.append(Constants.HTTPPOST_PARAM_SEPARATOR);
-
-        postBuilder.append(URLEncoder.encode("method", "UTF-8"));
-        postBuilder.append(Constants.HTTPPOST_KEYVALUE_SEPARATOR);
-        postBuilder.append(URLEncoder.encode(methodToExecute.getPhpMethodName(), "UTF-8"));
-
-        //extract params
-        for (int i = 0; i < params.length; i++) {
-            postBuilder.append(Constants.HTTPPOST_PARAM_SEPARATOR);
-            postBuilder.append(URLEncoder.encode("param" + i, "UTF-8"));
-            postBuilder.append(Constants.HTTPPOST_KEYVALUE_SEPARATOR);
-            postBuilder.append(URLEncoder.encode(params[i], "UTF-8"));
+    //executed on UI Thread
+    @Override
+    protected void onPostExecute(String result) {
+        Log.i("db", methodToExecute.name() + " result = " + result);
+        if (textView != null) {
+            textView.setText(result.trim().replace('|', '\n'));
         }
-
-        OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-        writer.write(postBuilder.toString());
-        writer.flush();
-        writer.close();
     }
-
-    /**
-     * Reads result from opened connection.
-     * @return A String with the results.
-     * @throws IOException
-     */
-    private String readResult()throws IOException{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        StringBuilder resultBuilder = new StringBuilder();
-
-        for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-            resultBuilder.append(line);
-        }
-
-        reader.close();
-        return resultBuilder.toString();
-    }
-
 }

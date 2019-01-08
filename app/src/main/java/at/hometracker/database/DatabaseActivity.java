@@ -2,11 +2,10 @@ package at.hometracker.database;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 import at.hometracker.R;
 
@@ -23,23 +22,14 @@ public class DatabaseActivity extends AppCompatActivity {
     }
 
     public void readFromDatabase(View view) {
-        try {
-            String result = new DatabaseTask(DatabaseMethod.SELECT_USERS).execute().get();
-            Log.i("db", DatabaseMethod.SELECT_USERS.name() + " result = " + result);
-
-            if(result != null && result.trim().length() > 0) {
-                //remove last "|" from result, then replace all "|" with "\n"
-                result = result.substring(0, result.length() -1).replace('|', '\n');
-                this.textView.setText(result);
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        new DatabaseTask(DatabaseMethod.SELECT_USERS, this.textView).execute();
     }
 
-    public void insertIntoDatabase(View view) throws ExecutionException, InterruptedException {
-        String result = new DatabaseTask(DatabaseMethod.INSERT_USER).execute("testUser", "testPW").get();
-        Log.i("db", DatabaseMethod.INSERT_USER.name() + " result = " + result);
+    public void insertIntoDatabase(View view) throws IOException {
+        SecurePassword secPw = PasswordUtils.generateSecurePassword("testPW");
+
+        DatabaseTask dbTask = new DatabaseTask(DatabaseMethod.INSERT_USER, null);
+        dbTask.execute("test@mail.com", "1000", "testUser", secPw.hashedPw, secPw.salt, getAssets().open("grimma.png"));
     }
 
     public void testPw(View view) {
