@@ -9,21 +9,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import javax.xml.datatype.Duration;
 
 import at.hometracker.R;
+import at.hometracker.database.DatabaseActivity;
 
 public class GroupSelectionActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_selection);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_groupselection);
         setSupportActionBar(myToolbar);
     }
 
@@ -51,6 +47,11 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
     public void openGroupActivity(View view){
         Intent intent = new Intent(GroupSelectionActivity.this, GroupActivity.class);
+        startActivity(intent);
+    }
+
+    public void openDatabaseActivity(View view){
+        Intent intent = new Intent(GroupSelectionActivity.this, DatabaseActivity.class);
         startActivity(intent);
     }
 
