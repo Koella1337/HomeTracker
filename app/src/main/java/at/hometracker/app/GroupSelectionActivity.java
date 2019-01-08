@@ -12,6 +12,7 @@ import android.view.View;
 
 import at.hometracker.R;
 import at.hometracker.database.DatabaseActivity;
+import at.hometracker.qrcode.QRCodeMainActivity;
 
 public class GroupSelectionActivity extends AppCompatActivity {
 
@@ -52,6 +53,11 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
     public void openDatabaseActivity(View view){
         Intent intent = new Intent(GroupSelectionActivity.this, DatabaseActivity.class);
+        startActivity(intent);
+    }
+
+    public void openQRCodeActivity(View view){
+        Intent intent = new Intent(GroupSelectionActivity.this, QRCodeMainActivity.class);
         startActivity(intent);
     }
 

@@ -1,4 +1,4 @@
-package at.hometracker;
+package at.hometracker.qrcode;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,13 +11,14 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class QRReaderActivity extends AppCompatActivity {
+import at.hometracker.R;
 
+public class ReaderActivity extends AppCompatActivity {
     private Button scan_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qrreader);
+        setContentView(R.layout.activity_reader);
         scan_btn = (Button) findViewById(R.id.scan_btn);
         final Activity activity = this;
         scan_btn.setOnClickListener(new View.OnClickListener() {

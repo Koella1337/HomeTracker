@@ -3,25 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".qrcode.QRCodeMainActivity">
+    tools:context=".ReaderActivity">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QR Code"
-        android:textSize="30dp"
+        android:text="QRCode Scanner"
+        android:textSize="25dp"
         android:layout_centerHorizontal="true"/>
-   <Button
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_centerHorizontal="true"
-       android:text="GENERATOR"
-       android:id="@+id/gen"
-       android:layout_marginTop="50dp"/>
     <Button
-        android:id="@+id/scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="SCANNER"
-        android:layout_marginTop="100dp"/>
+        android:layout_centerVertical="true"
+        android:text="SCAN"
+        android:id="@+id/scan_btn"/>
 </RelativeLayout>
