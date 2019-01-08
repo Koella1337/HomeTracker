@@ -12,13 +12,17 @@
         <activity
             android:name=".app.GroupSelectionActivity"
             android:label="@string/group_selection_label">
+
+        </activity>
+        <activity android:name=".app.GroupActivity" />
+        <activity android:name=".QRActivity" />
+        <activity android:name=".QRReaderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.GroupActivity"/>
     </application>
 
 </manifest>
