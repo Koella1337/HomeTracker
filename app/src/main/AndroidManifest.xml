@@ -26,6 +26,7 @@
         <activity android:name=".qrcode.QRCodeMainActivity"/>
         <activity android:name=".qrcode.GeneratorActivity"/>
         <activity android:name=".qrcode.ReaderActivity"/>
+        <activity android:name=".app.GridViewActivity"/>
     </application>
 
 </manifest>

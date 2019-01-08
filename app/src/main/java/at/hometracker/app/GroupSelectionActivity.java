@@ -61,4 +61,8 @@ public class GroupSelectionActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openGridActivity(View view){
+        Intent intent = new Intent(GroupSelectionActivity.this, GridViewActivity.class);
+        startActivity(intent);
+    }
 }
