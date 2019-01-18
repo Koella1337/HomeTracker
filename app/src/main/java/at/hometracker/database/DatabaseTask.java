@@ -8,7 +8,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
 
-import at.hometracker.app.Constants;
+import at.hometracker.shared.Constants;
 
 //AsyncTask<Params, Progress, Result>
 public class DatabaseTask extends AsyncTask<Object, Void, String> {

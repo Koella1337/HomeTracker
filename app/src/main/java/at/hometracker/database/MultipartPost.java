@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import at.hometracker.app.Constants;
+import at.hometracker.shared.Constants;
 
 public class MultipartPost {
 
@@ -89,29 +89,27 @@ public class MultipartPost {
         request.flush();
         request.close();
 
-        String response ="";
-
         // checks server's status code first
         int status = httpConn.getResponseCode();
         if (status == HttpURLConnection.HTTP_OK) {
             BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
 
-            String line = null;
+            String line;
             StringBuilder responseBuilder = new StringBuilder();
 
             while ((line = responseStreamReader.readLine()) != null) {
                 responseBuilder.append(line).append("\n");
             }
-            response = responseBuilder.toString();
 
             responseStreamReader.close();
             httpConn.disconnect();
+            return responseBuilder.toString();
+
+
         } else {
             httpConn.disconnect();
             throw new IOException("Server returned non-OK status: " + status);
         }
-
-        return response;
     }
 
 }

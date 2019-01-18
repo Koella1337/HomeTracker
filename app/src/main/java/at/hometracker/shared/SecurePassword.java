@@ -1,6 +1,6 @@
-package at.hometracker.database;
+package at.hometracker.shared;
 
-class SecurePassword {
+public class SecurePassword {
     public final String salt;
     public final String hashedPw;
 

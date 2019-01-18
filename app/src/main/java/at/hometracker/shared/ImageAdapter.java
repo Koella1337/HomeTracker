@@ -1,4 +1,4 @@
-package at.hometracker;
+package at.hometracker.shared;
  
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
- 
+
+import at.hometracker.R;
+
 public class ImageAdapter extends BaseAdapter {
     private Context context;
     private final int item_image[];

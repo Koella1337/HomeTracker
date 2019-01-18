@@ -1,13 +1,20 @@
 package at.hometracker.database;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import at.hometracker.R;
+import at.hometracker.shared.Constants;
+import at.hometracker.shared.PasswordUtils;
+import at.hometracker.shared.SecurePassword;
+import at.hometracker.shared.Utils;
 
 public class DatabaseActivity extends AppCompatActivity {
 
@@ -25,31 +32,39 @@ public class DatabaseActivity extends AppCompatActivity {
         new DatabaseTask(DatabaseMethod.SELECT_USERS, this.textView).execute();
     }
 
-    public void insertIntoDatabase(View view) throws IOException {
-        SecurePassword secPw = PasswordUtils.generateSecurePassword("testPW");
-
-        DatabaseTask dbTask = new DatabaseTask(DatabaseMethod.INSERT_USER, null);
-        dbTask.execute("test@mail.com", "1000", "testUser", secPw.hashedPw, secPw.salt, getAssets().open("grimma.png"));
+    public void insertIntoDatabase(View view) {
+        Utils.pickImageFromGallery(this);
     }
 
-    public void testPw(View view) {
-        String pw = "X";
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        SecurePassword secPw = PasswordUtils.generateSecurePassword(pw);
+        if (resultCode != RESULT_OK) {
+            System.out.println("Non-OK resultCode!");
+            return;
+        }
 
-        System.out.printf("Salt Len: %d --> %s%n", secPw.salt.length(), secPw.salt);
-        System.out.printf("PW Len: %d --> %s%n", secPw.hashedPw.length(), secPw.hashedPw);
+        switch (requestCode) {
+            case Constants.REQUESTCODE_PICK_IMAGE:
+                try {
+                    InputStream fileStream = getContentResolver().openInputStream(data.getData());
+                    if (fileStream.available() < Constants.FILE_MAX_SIZE) {
+                        SecurePassword secPw = PasswordUtils.generateSecurePassword("testPW");
+                        DatabaseTask dbTask = new DatabaseTask(DatabaseMethod.INSERT_USER, null);
 
-        System.out.println();
-
-        System.out.printf("Validating \"%s\": %b%n", pw, PasswordUtils.validatePassword(pw, secPw));
-
-        System.out.println();
-
-        System.out.printf("Validating \"%s\": %b%n", "test123_lo", PasswordUtils.validatePassword("test123_lo", secPw));
-        System.out.printf("Validating \"%s\": %b%n", "test123-lol", PasswordUtils.validatePassword("test123-lol", secPw));
-        System.out.printf("Validating \"%s\": %b%n", "test123_loL", PasswordUtils.validatePassword("test123_loL", secPw));
-        System.out.printf("Validating \"%s\": %b%n", "x", PasswordUtils.validatePassword("x", secPw));
+                        dbTask.execute("test@mail.com", "1000", "testUser", secPw.hashedPw, secPw.salt, fileStream);
+                    }
+                    else {
+                        Log.e("db", "File too large for upload!");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                System.out.println("Unrecognized requestcode: " + requestCode);
+                break;
+        }
     }
-
 }

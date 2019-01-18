@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import at.hometracker.ImageAdapter;
+import at.hometracker.shared.ImageAdapter;
 import at.hometracker.R;
 
 public class GridViewActivity  extends AppCompatActivity {
