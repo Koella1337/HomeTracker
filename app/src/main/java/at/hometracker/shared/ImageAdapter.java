@@ -27,7 +27,7 @@ public class ImageAdapter extends BaseAdapter {
  
         if (convertView == null) {
             gridView = new View(context);
-            gridView = inflater.inflate(R.layout.thumbnail_gridview, null);
+            gridView = inflater.inflate(R.layout.single_thumbnail, null);
 
             ImageView image = (ImageView) gridView.findViewById(R.id.item_image);
             image.setImageResource(item_image[position]);

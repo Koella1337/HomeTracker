@@ -6,16 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".app.GroupSelectionActivity">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="292dp"
-        android:onClick="openDatabaseActivity"
-        android:text="database testing"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_groupselection" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_groupselection"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:id="@+id/layout_groups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button_qr_reader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="openQRCodeActivity"
+                android:text="open QR activity"
+                tools:layout_editor_absoluteX="84dp"
+                tools:layout_editor_absoluteY="508dp" />
+
+            <Button
+                android:id="@+id/button_gridview"
+                android:layout_width="139dp"
+                android:layout_height="58dp"
+                android:onClick="openGridActivity"
+                android:text="open GRID activity"
+                tools:layout_editor_absoluteX="211dp"
+                tools:layout_editor_absoluteY="392dp" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="openDatabaseActivity"
+                android:text="database testing"
+                tools:layout_editor_absoluteX="36dp"
+                tools:layout_editor_absoluteY="392dp" />
+        </LinearLayout>
+    </ScrollView>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_groupselection"
@@ -25,38 +63,5 @@
         android:theme="@style/AppTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/group_selection_label"/>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="148dp"
-        android:onClick="openGroupActivity"
-        android:text="open group activity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_groupselection" />
-
-    <Button
-        android:id="@+id/button_qr_reader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="24dp"
-        android:onClick="openQRCodeActivity"
-        android:text="open QR activity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
-
-    <Button
-        android:id="@+id/button_gridview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="24dp"
-        android:onClick="openGridActivity"
-        android:text="open GRID activity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_qr_reader" />
 
 </android.support.constraint.ConstraintLayout>
