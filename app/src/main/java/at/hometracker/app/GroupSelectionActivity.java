@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import at.hometracker.R;
 import at.hometracker.database.DatabaseActivity;
 import at.hometracker.qrcode.QRCodeMainActivity;
+import at.hometracker.R;
 
 public class GroupSelectionActivity extends AppCompatActivity {
 
@@ -68,7 +68,7 @@ public class GroupSelectionActivity extends AppCompatActivity {
     }
 
     public void openGridActivity(View view){
-        Intent intent = new Intent(GroupSelectionActivity.this, GridViewActivity.class);
+        Intent intent = new Intent(GroupSelectionActivity.this, GridViewMainActivity.class);
         startActivity(intent);
     }
 
