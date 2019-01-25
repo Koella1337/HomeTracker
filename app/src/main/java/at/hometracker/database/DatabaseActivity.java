@@ -41,7 +41,7 @@ public class DatabaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode != RESULT_OK) {
-            System.out.println("Non-OK resultCode!");
+            System.out.println("Non-OK resultCode! (" + resultCode + ")");
             return;
         }
 

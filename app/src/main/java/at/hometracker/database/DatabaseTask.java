@@ -56,7 +56,7 @@ public class DatabaseTask extends AsyncTask<Object, Void, String> {
     protected void onPostExecute(String result) {
         Log.i("db", methodToExecute.name() + " result = " + result);
         if (textView != null) {
-            textView.setText(result.trim().replace('|', '\n'));
+            textView.setText(result.trim().replace(Constants.PHP_RESULT_SPLITTER, '\n'));
         }
     }
 }
