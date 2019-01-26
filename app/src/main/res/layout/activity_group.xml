@@ -107,6 +107,6 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/group_label" />
+        app:title="@string/label_group" />
 
 </android.support.constraint.ConstraintLayout>

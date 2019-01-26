@@ -6,27 +6,27 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        android:title="@string/search_label"
+        android:title="@string/label_search"
         app:showAsAction="always"></item>
 
     <!-- CAMERA -->
     <item
         android:id="@+id/action_camera"
         android:icon="@drawable/ic_camera"
-        android:title="@string/camera_label"
+        android:title="@string/label_camera"
         app:showAsAction="always"></item>
 
     <!-- PROFILE -->
     <item
         android:id="@+id/action_profile"
         app:showAsAction="never"
-        android:title="@string/profile_label">
+        android:title="@string/label_profile">
     </item>
 
     <!-- SETTINGS -->
     <item
         android:id="@+id/action_settings"
         app:showAsAction="never"
-        android:title="@string/settings_label">
+        android:title="@string/label_settings">
     </item>
 </menu>

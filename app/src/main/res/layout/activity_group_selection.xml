@@ -62,6 +62,6 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/group_selection_label"/>
+        app:title="@string/label_group_selection" />
 
 </android.support.constraint.ConstraintLayout>
