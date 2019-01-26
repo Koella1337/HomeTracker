@@ -1,17 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    android:background="@color/ic_launcher_background"
+    android:dividerPadding="2dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="2dp"
+    android:showDividers="end"
     tools:context=".app.GridViewOneSingleItemActivity">
+
+    <!--
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/thumbnailImage2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        app:civ_border_color="#000000"
+        app:civ_border_overlay="false"
+        app:civ_border_width="2dp"
+        tools:civ_circle_background_color="@color/cardview_dark_background" />-->
 
     <TextView
         android:id="@+id/txtInfo"
         android:layout_width="wrap_content"
-        android:text="Activity One"
-        android:textSize="24sp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_height="wrap_content" />
+        android:layout_gravity="center_horizontal"
+        android:text="Activity One"
+        android:textSize="24sp" />
 
-</RelativeLayout>
+    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/thumbnailImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_plus"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="10dp"
+        app:riv_mutate_background="true"
+        app:riv_tile_mode="repeat" />
+
+</LinearLayout>

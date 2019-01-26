@@ -9,37 +9,65 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import at.hometracker.R;
 import at.hometracker.utils.FileUtils;
 
 public class GridViewMainActivity extends AppCompatActivity {
 
-    GridLayout mainGrid;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gridview_main);
 
-        mainGrid = (GridLayout) findViewById(R.id.mainGrid);
-
+        GridView mainGrid = (GridView) findViewById(R.id.mainGrid);
         ImageView imageView = (ImageView) findViewById(R.id.testImageView);
 
+        final List<ImageWithText> imageList = new ArrayList<>();
+
         try {
-            FileUtils.setImageForImageView(imageView, this,"max-the-magician.jpg");
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max1"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"grimma.png"),"grimma"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"Homura_BG2.jpg"),"Homura_BG2"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max2"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max3"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max4"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max5"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max6"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max7"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max8"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max9"));
+            imageList.add(new ImageWithText(FileUtils.getByteArrayForFile(this,"max-the-magician.jpg"),"max10"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        CustomGridAdapter adapter = new CustomGridAdapter(GridViewMainActivity.this, imageList);
+
+        mainGrid.setAdapter(adapter);
+        mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(GridViewMainActivity.this, "You Clicked at " +imageList.get(position).getName(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         //Set Event
-        setSingleEvent(mainGrid);
         //setToggleEvent(mainGrid);
     }
 
