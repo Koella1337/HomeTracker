@@ -1,6 +1,8 @@
 package at.hometracker.app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +43,32 @@ public class GroupSelectionActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.action_add_group:
+                Log.i("menu clicked","action_add_group");
+
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+                LayoutInflater inflater = this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_create_group, null);
+                dialogBuilder.setView(dialogView);
+
+                dialogBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO
+                    }
+                    });
+
+                dialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO
+                        }
+                });
+                AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
+
+
+                return true;
             case R.id.action_profile:
                 Log.i("menu clicked","action_profile");
                 return true;

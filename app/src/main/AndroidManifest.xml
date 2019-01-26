@@ -29,7 +29,7 @@
         <activity android:name=".qrcode.ReaderActivity" />
         <activity android:name=".app.ShelfSelectionActivity" />
         <activity android:name=".app.ShelfActivity" />
-        <activity android:name=".app.ClickableImageTestActivity"></activity>
+        <activity android:name=".app.ClickableImageTestActivity" />
     </application>
 
 </manifest>
