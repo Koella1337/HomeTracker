@@ -3,6 +3,8 @@ package at.hometracker.utils;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -34,12 +36,12 @@ public class FileUtils {
         setImageViewWithByteArray(imageView, toByteArray(in));
     }
 
-    private static void setImageViewWithByteArray(ImageView imageView, byte[] data) {
+    public static void setImageViewWithByteArray(ImageView imageView, byte[] data) {
         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
         imageView.setImageBitmap(bitmap);
     }
 
-    private static byte[] getByteArrayForFile(Activity activity, String filename) throws IOException {
+    public static byte[] getByteArrayForFile(Activity activity, String filename) throws IOException {
         return toByteArray(getInputStream(activity,filename));
     }
 

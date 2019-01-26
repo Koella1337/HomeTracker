@@ -13,4 +13,6 @@
     <string name="label_keep_user_signed_in">Angemeldet bleiben</string>
     <string name="label_forgot_pw">Passwort vergessen?</string>
     <string name="label_register">Registrieren</string>
+    <string name="create_shelf_label">Kasten erstellen</string>
+    <string name="name_label">Name</string>
 </resources>

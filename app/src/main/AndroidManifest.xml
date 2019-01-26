@@ -29,8 +29,9 @@
         <activity android:name=".qrcode.QRCodeMainActivity" />
         <activity android:name=".qrcode.GeneratorActivity" />
         <activity android:name=".qrcode.ReaderActivity" />
-        <activity android:name=".app.GridViewMainActivity" />
-        <activity android:name=".app.GridViewOneSingleItemActivity" />
+        <activity android:name=".app.ShelfSelectionActivity" />
+        <activity android:name=".app.ShelfActivity" />
+        <activity android:name=".app.ClickableImageTestActivity" />
     </application>
 
 </manifest>

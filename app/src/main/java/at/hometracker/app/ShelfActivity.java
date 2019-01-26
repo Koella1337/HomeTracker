@@ -6,12 +6,12 @@ import android.widget.TextView;
 
 import at.hometracker.R;
 
-public class GridViewOneSingleItemActivity extends AppCompatActivity {
+public class ShelfActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gridview_singleitem);
+        setContentView(R.layout.single_shelf_preview);
 
         TextView txtInfo = (TextView)findViewById(R.id.txtInfo);
         if(getIntent() != null)

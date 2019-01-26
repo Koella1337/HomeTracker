@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".app.GridViewMainActivity">
+    tools:context=".app.ShelfSelectionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:layout_weight="8"
             android:alignmentMode="alignMargins"
             android:background="@color/colorPrimaryDark"
-            android:columnCount="2"
+            android:columnCount="4"
             android:columnOrderPreserved="false"
             android:padding="14dp"
             android:rowCount="3">

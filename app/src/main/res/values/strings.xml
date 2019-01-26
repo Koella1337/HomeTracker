@@ -15,4 +15,6 @@
     <string name="label_forgot_pw">Forgot password?</string>
     <string name="label_register">Register</string>
     <string name="label_email" translatable="false">E-Mail</string>
+    <string name="create_shelf_label">Create shelf</string>
+    <string name="name_label">Name</string>
 </resources>
