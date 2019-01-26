@@ -1,7 +1,6 @@
 package at.hometracker.app;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,7 @@ public class CustomGridAdapter extends BaseAdapter {
 
             if (convertView == null) {
                 grid = new View(mContext);
-                grid = inflater.inflate(R.layout.activity_gridview_singleitem, null);
+                grid = inflater.inflate(R.layout.single_shelf_preview, null);
                 TextView textView = (TextView) grid.findViewById(R.id.txtInfo);
                 ImageView imageView = (ImageView)grid.findViewById(R.id.thumbnailImage);
                 textView.setText(imageList.get(position).getName());
@@ -58,4 +57,6 @@ public class CustomGridAdapter extends BaseAdapter {
 
             return grid;
         }
+
+
 }

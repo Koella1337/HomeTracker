@@ -1,36 +1,36 @@
 package at.hometracker.app;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import at.hometracker.R;
 import at.hometracker.utils.FileUtils;
+import at.lukle.clickableareasimage.ClickableArea;
+import at.lukle.clickableareasimage.ClickableAreasImage;
+import at.lukle.clickableareasimage.OnClickableAreaClickedListener;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class GridViewMainActivity extends AppCompatActivity {
+public class ShelfSelectionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gridview_main);
+        setContentView(R.layout.activity_shelf_selection);
 
         GridView mainGrid = (GridView) findViewById(R.id.mainGrid);
         ImageView imageView = (ImageView) findViewById(R.id.testImageView);
@@ -54,62 +54,66 @@ public class GridViewMainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        CustomGridAdapter adapter = new CustomGridAdapter(GridViewMainActivity.this, imageList);
+        CustomGridAdapter adapter = new CustomGridAdapter(ShelfSelectionActivity.this, imageList);
 
         mainGrid.setAdapter(adapter);
+
         mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(GridViewMainActivity.this, "You Clicked at " +imageList.get(position).getName(), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(ShelfSelectionActivity.this, "You Clicked at " +imageList.get(position).getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ShelfSelectionActivity.this,ShelfActivity.class);
+                intent.putExtra("info","This is activity from card item index  "+position);
+                startActivity(intent);
             }
         });
-
-        //Set Event
-        //setToggleEvent(mainGrid);
+        Toolbar shelfToolbar= (Toolbar) findViewById(R.id.toolbar_shelf);
+        setSupportActionBar(shelfToolbar);
     }
 
-    private void setToggleEvent(GridLayout mainGrid) {
-        //Loop all child item of Main Grid
-        for (int i = 0; i < mainGrid.getChildCount(); i++) {
-            //You can see , all child item is CardView , so we just cast object to CardView
-            final CardView cardView = (CardView) mainGrid.getChildAt(i);
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (cardView.getCardBackgroundColor().getDefaultColor() == -1) {
-                        //Change background color
-                        cardView.setCardBackgroundColor(Color.parseColor("#FF6F00"));
-                        Toast.makeText(GridViewMainActivity.this, "State : True", Toast.LENGTH_SHORT).show();
 
-                    } else {
-                        //Change background color
-                        cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-                        Toast.makeText(GridViewMainActivity.this, "State : False", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.shelf_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                Log.i("menu clicked","action_profile");
+                return true;
+            case R.id.action_settings:
+                Log.i("menu clicked","action_settings");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
-    private void setSingleEvent(GridLayout mainGrid) {
+  /*
+    private void setSingleEvent(GridView mainGrid) {
         //Loop all child item of Main Grid
         for (int i = 0; i < mainGrid.getChildCount(); i++) {
             //You can see , all child item is CardView , so we just cast object to CardView
-            CardView cardView = (CardView) mainGrid.getChildAt(i);
+            View cardView = mainGrid.getChildAt(i);
             final int finalI = i;
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(GridViewMainActivity.this,GridViewOneSingleItemActivity.class);
+                    Intent intent = new Intent(ShelfSelectionActivity.this,ShelfActivity.class);
                     intent.putExtra("info","This is activity from card item index  "+finalI);
                     startActivity(intent);
 
                 }
             });
         }
-    }
+    }*/
 }

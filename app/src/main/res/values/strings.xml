@@ -8,4 +8,5 @@
     <string name="search_label">Search</string>
     <string name="plus_label" translatable="false">+</string>
     <string name="create_group_label">Create group ...</string>
+    <string name="create_shelf_label">Create shelf ...</string>
 </resources>

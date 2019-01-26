@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_group"
+        android:title="@string/create_shelf_label"
+        app:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/action_profile"
+        app:showAsAction="never"
+        android:title="@string/profile_label">
+    </item>
+
+    <item
+        android:id="@+id/action_settings"
+        app:showAsAction="never"
+        android:title="@string/settings_label">
+    </item>
+</menu>

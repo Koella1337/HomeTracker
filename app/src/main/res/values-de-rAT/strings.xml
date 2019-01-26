@@ -7,4 +7,5 @@
     <string name="camera_label">Kamera</string>
     <string name="search_label">Suche</string>
     <string name="create_group_label">Gruppe erstellen ...</string>
+    <string name="create_shelf_label">Kasten erstellen...</string>
 </resources>
