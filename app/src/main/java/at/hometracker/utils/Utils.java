@@ -1,4 +1,4 @@
-package at.hometracker.shared;
+package at.hometracker.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,9 +19,9 @@ public class Utils {
         startActivityForResult(originActivity, intent, REQUESTCODE_PICK_IMAGE, null);
     }
 
-    public static void setLoginPreferences(Context context, String username, String pw) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE).edit();
-        editor.putString(PREFNAME_USERNAME, username);
+    public static void setLoginPreferences(Context appContext, String email, String pw) {
+        SharedPreferences.Editor editor = appContext.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE).edit();
+        editor.putString(PREFNAME_EMAIL, email);
         editor.putString(PREFNAME_PASSWORD, pw);
         editor.apply();
     }

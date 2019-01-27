@@ -1,4 +1,4 @@
-package at.hometracker.app;
+package at.hometracker.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

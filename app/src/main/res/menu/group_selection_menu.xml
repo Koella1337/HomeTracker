@@ -19,4 +19,10 @@
         app:showAsAction="never"
         android:title="@string/label_settings">
     </item>
+
+    <item
+        android:id="@+id/action_logout"
+        app:showAsAction="never"
+        android:title="@string/label_logout">
+    </item>
 </menu>

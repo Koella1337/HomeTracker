@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".shared.LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -17,10 +17,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_groupselection2" >
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_login">
 
         <EditText
-            android:id="@+id/txtfield_email"
+            android:id="@+id/textfield_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -29,14 +29,13 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/txtfield_password"
+            android:id="@+id/textfield_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/label_password"
             android:inputType="textPassword"
-            android:textSize="24sp"
-            tools:ignore="Autofill" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +43,7 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/checkbox_keepSignedIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -86,16 +85,17 @@
                 android:text="@string/label_register" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btn_login"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/label_login" />
+
         </LinearLayout>
     </LinearLayout>
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_groupselection2"
+        android:id="@+id/toolbar_login"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"

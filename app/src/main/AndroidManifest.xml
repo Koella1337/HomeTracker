@@ -16,22 +16,22 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".shared.LoginActivity">
+            android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.GroupSelectionActivity" />
-        <activity android:name=".app.GroupActivity" />
-        <activity android:name=".database.DatabaseActivity" />
+        <activity android:name=".activities.GroupSelectionActivity" />
+        <activity android:name=".activities.GroupActivity" />
+        <activity android:name=".activities.DatabaseActivity" />
         <activity android:name=".qrcode.QRCodeMainActivity" />
         <activity android:name=".qrcode.GeneratorActivity" />
         <activity android:name=".qrcode.ReaderActivity" />
-        <activity android:name=".app.ShelfSelectionActivity" />
-        <activity android:name=".app.ShelfActivity" />
-        <activity android:name=".app.ClickableImageTestActivity" />
+        <activity android:name=".activities.ShelfSelectionActivity" />
+        <activity android:name=".activities.ShelfActivity" />
+        <activity android:name=".activities.ClickableImageTestActivity" />
     </application>
 
 </manifest>
