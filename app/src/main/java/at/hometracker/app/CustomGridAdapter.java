@@ -1,7 +1,6 @@
 package at.hometracker.app;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,9 @@ import at.hometracker.utils.FileUtils;
 
 public class CustomGridAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ImageWithText> imageList;
+    private List<Thumbnail> imageList;
 
-    public CustomGridAdapter(Context mContext, List<ImageWithText> imageList) {
+    public CustomGridAdapter(Context mContext, List<Thumbnail> imageList) {
         this.mContext = mContext;
         this.imageList = imageList;
     }
@@ -41,7 +40,6 @@ public class CustomGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("getView", "getView");
         View grid;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

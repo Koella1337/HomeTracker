@@ -1,11 +1,11 @@
 package at.hometracker.app;
 
-public class ImageWithText {
+public class Thumbnail {
 
     private byte[] imageData;
     private String name;
 
-    public ImageWithText(byte[] imageData, String name) {
+    public Thumbnail(byte[] imageData, String name) {
         this.imageData = imageData;
         this.name = name;
     }

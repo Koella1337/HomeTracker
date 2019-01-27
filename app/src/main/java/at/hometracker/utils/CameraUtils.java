@@ -1,25 +1,24 @@
 package at.hometracker.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.renderscript.ScriptGroup;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import static at.hometracker.app.Constants.REQUESTCODE_IMAGE_CAPTURE;
+import at.hometracker.shared.Constants;
 
-public class CameraUtil {
+
+public class CameraUtils {
 
     public static void requestPicture(Activity sourceActivity) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(sourceActivity.getPackageManager()) != null) {
-            sourceActivity.startActivityForResult(takePictureIntent, REQUESTCODE_IMAGE_CAPTURE);
+            sourceActivity.startActivityForResult(takePictureIntent, Constants.REQUESTCODE_IMAGE_CAPTURE);
         }
     }
 
@@ -35,6 +34,9 @@ public class CameraUtil {
 
     private static byte[] getByteArrayForBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if(bitmap.getByteCount() > Constants.FILE_MAX_SIZE/2){
+            bitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth()*0.4),(int) (bitmap.getHeight()*0.4),false);
+        }
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
