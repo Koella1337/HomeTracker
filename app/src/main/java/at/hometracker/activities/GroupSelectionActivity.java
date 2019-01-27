@@ -157,11 +157,6 @@ public class GroupSelectionActivity extends AppCompatActivity implements Databas
         startActivity(intent);
     }
 
-    public void openGridActivity(View view){
-        Intent intent = new Intent(this, ShelfSelectionActivity.class);
-        startActivity(intent);
-    }
-
     public void openClickableAreaActivity(View view){
         Intent intent = new Intent(this, ClickableImageTestActivity.class);
         startActivity(intent);

@@ -30,7 +30,6 @@
         <activity android:name=".qrcode.QRCodeMainActivity" />
         <activity android:name=".qrcode.GeneratorActivity" />
         <activity android:name=".qrcode.ReaderActivity" />
-        <activity android:name=".activities.ShelfSelectionActivity" />
         <activity android:name=".activities.ShelfActivity" />
         <activity android:name=".activities.ClickableImageTestActivity" />
     </application>

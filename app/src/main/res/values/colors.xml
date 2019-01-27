@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <!-- Toolbar color-->
+    <color name="colorPrimary">@color/md_light_blue_700</color>
+
+    <!-- Notification bar color -->
     <color name="colorPrimaryDark">#ebebeb</color>
-    <color name="colorAccent">#8be8ff</color>
+
+    <!-- color for e.g. inputfield 'underline' -->
+    <color name="colorAccent">#8BE8FF</color>
+
+    <!-- light blue-->
+    <color name="md_light_blue_50">#E1F5FE</color>
+    <color name="md_light_blue_100">#B3E5FC</color>
+    <color name="md_light_blue_200">#81D4fA</color>
+    <color name="md_light_blue_300">#4fC3F7</color>
+    <color name="md_light_blue_400">#29B6FC</color>
+    <color name="md_light_blue_500">#03A9F4</color>
+    <color name="md_light_blue_600">#039BE5</color>
+    <color name="md_light_blue_700">#0288D1</color>
+    <color name="md_light_blue_800">#0277BD</color>
+    <color name="md_light_blue_900">#01579B</color>
+    <color name="md_light_blue_A100">#80D8FF</color>
+    <color name="md_light_blue_A200">#40C4FF</color>
+    <color name="md_light_blue_A400">#00B0FF</color>
+    <color name="md_light_blue_A700">#0091EA</color>
+
 </resources>
