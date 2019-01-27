@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import at.hometracker.TouchDrawActivity;
 import at.hometracker.database.DatabaseActivity;
 import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.R;
@@ -105,9 +106,13 @@ public class GroupSelectionActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openTouchDrawActivity(View view){
+        Intent intent = new Intent(GroupSelectionActivity.this, TouchDrawActivity.class);
+        startActivity(intent);
+    }
+
     private void setOnClickListeners() {
         //TODO
-
     }
 
     public void createTestingGroups(){
