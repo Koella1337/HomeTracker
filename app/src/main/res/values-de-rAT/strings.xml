@@ -19,4 +19,6 @@
     <string name="label_please_wait">Bitte warten</string>
     <string name="label_logout">Abmelden</string>
     <string name="toast_login_failed">Anmeldung fehlgeschlagen!</string>
+    <string name="toast_registration_failed">Registrierung fehlgeschlagen!</string>
+    <string name="toast_registration_success">Registrierung erfolgreich!</string>
 </resources>

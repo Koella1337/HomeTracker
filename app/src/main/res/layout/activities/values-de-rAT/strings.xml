@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_groupcreation_failed">Erstellung fehlgeschlagen!</string>
+    <string name="toast_groupcreation_success">"Gruppe erstellt: "</string>
+    <string name="toast_edittext_invalid">Alle Felder müssen mindestens 4 Charaktere haben und können nur Zahlen, Buchstaben, Leerzeichen, \"_\" und \"-\" beinhalten.</string>
+    <string name="label_new_group">Neue Gruppe</string>
+    <string name="label_cancel">Abbrechen</string>
+    <string name="toast_email_invalid">Ungültige E-Mail Adresse!</string>
+</resources>

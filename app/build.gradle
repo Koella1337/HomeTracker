@@ -22,7 +22,7 @@ android {
     }
     sourceSets {
         main {
-            res.srcDirs = ['src/main/res', 'src/main/res/layout/activities', 'src/main/res/layout/dialogs', 'src/main/res/layout', 'src/main/res/layout/activities/layout', 'src/main/res/layout/dialogs/layout', 'src/main/res/layout/single_elements/layout', 'src/main/res/layout/single_elements']
+            res.srcDirs = ['src/main/res/layout/activities', 'src/main/res/layout/dialogs', 'src/main/res/layout', 'src/main/res/layout/activities/layout', 'src/main/res/layout/dialogs/layout', 'src/main/res/layout/single_elements/layout', 'src/main/res/layout/single_elements', 'src/main/res']
         }
     }
 }

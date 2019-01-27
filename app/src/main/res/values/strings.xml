@@ -21,4 +21,6 @@
     <string name="label_please_wait">Please wait</string>
     <string name="label_logout">Log out</string>
     <string name="toast_login_failed">Login failed!</string>
+    <string name="toast_registration_failed">Registration failed!</string>
+    <string name="toast_registration_success">Registration successful!</string>
 </resources>
