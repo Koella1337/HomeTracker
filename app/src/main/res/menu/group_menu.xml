@@ -29,4 +29,11 @@
         app:showAsAction="never"
         android:title="@string/label_settings">
     </item>
+
+    <!-- SETTINGS -->
+    <item
+        android:id="@+id/action_create_shelf"
+        app:showAsAction="never"
+        android:title="@string/label_create_shelf">
+    </item>
 </menu>

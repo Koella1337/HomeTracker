@@ -9,8 +9,7 @@
     android:dividerPadding="0dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="2dp"
-    tools:context=".activities.ShelfActivity">
+    android:padding="2dp">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/thumbnailImage"
