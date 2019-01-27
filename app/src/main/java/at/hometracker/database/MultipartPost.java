@@ -10,10 +10,11 @@ import java.net.URL;
 
 import at.hometracker.shared.Constants;
 
+import static at.hometracker.shared.Constants.crlf;
+
 public class MultipartPost {
 
     private static final String boundary =  "*****";
-    private static final String crlf = "\r\n";
     private static final String twoHyphens = "--";
 
     private final HttpURLConnection httpConn;
@@ -85,7 +86,6 @@ public class MultipartPost {
      */
     public String finish() throws IOException {
         request.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
-        //request.writeBytes("JIDQWJDIOWQJDIWJQOIDJOQWIWD HAAAAAAALLLLLOOOOOOOOOOOOOOOOOOOO");
         request.flush();
         request.close();
 
@@ -98,14 +98,16 @@ public class MultipartPost {
             StringBuilder responseBuilder = new StringBuilder();
 
             while ((line = responseStreamReader.readLine()) != null) {
-                responseBuilder.append(line).append("\n");
+                responseBuilder.append(line).append(crlf);
             }
+
+            String ret = responseBuilder.toString();
+            if (ret != null && ret.endsWith(crlf))
+                ret = ret.substring(0, ret.length() - crlf.length());   //delete last "crlf"
 
             responseStreamReader.close();
             httpConn.disconnect();
-            return responseBuilder.toString();
-
-
+            return ret;
         } else {
             httpConn.disconnect();
             throw new IOException("Server returned non-OK status: " + status);

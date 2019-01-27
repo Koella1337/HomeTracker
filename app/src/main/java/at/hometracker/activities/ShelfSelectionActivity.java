@@ -1,4 +1,4 @@
-package at.hometracker.app;
+package at.hometracker.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.hometracker.R;
+import at.hometracker.app.CustomGridAdapter;
+import at.hometracker.app.ImageWithText;
 import at.hometracker.utils.FileUtils;
 import at.lukle.clickableareasimage.ClickableArea;
 import at.lukle.clickableareasimage.ClickableAreasImage;

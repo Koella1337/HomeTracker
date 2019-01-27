@@ -13,9 +13,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+<<<<<<< HEAD
+        android:theme="@style/AppTheme">
+        <activity android:name=".TouchDrawActivity"></activity>
+=======
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TouchDrawActivity"></activity>
+>>>>>>> 60502aff149771eed259810c36456e6a493e46f3
         <activity
             android:name=".activities.LoginActivity">
             <intent-filter>

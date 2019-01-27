@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".app.ShelfSelectionActivity">
+    tools:context=".activities.ShelfSelectionActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_shelf"

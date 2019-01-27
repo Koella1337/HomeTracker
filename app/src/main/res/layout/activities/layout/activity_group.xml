@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.GroupActivity">
+    tools:context=".activities.GroupActivity">
 
     <TableLayout
         android:layout_width="368dp"
@@ -107,6 +107,6 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/group_label" />
+        app:title="@string/label_group" />
 
 </android.support.constraint.ConstraintLayout>

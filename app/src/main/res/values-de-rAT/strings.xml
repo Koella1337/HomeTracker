@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="group_selection_label">Gruppenauswahl</string>
-    <string name="profile_label">Profil</string>
-    <string name="settings_label">Einstellungen</string>
-    <string name="group_label">Gruppe</string>
-    <string name="camera_label">Kamera</string>
-    <string name="search_label">Suche</string>
-    <string name="create_group_label">Gruppe erstellen</string>
-    <string name="create_shelf_label">Kasten erstellen</string>
-    <string name="name_label">Name</string>
+    <string name="label_group_selection">Gruppenauswahl</string>
+    <string name="label_profile">Profil</string>
+    <string name="label_settings">Einstellungen</string>
+    <string name="label_group">Gruppe</string>
+    <string name="label_camera">Kamera</string>
+    <string name="label_search">Suche</string>
+    <string name="label_create_group">Gruppe erstellen</string>
+    <string name="label_login">Anmelden</string>
+    <string name="label_username">Benutzername</string>
+    <string name="label_password">Passwort</string>
+    <string name="label_keep_user_signed_in">Angemeldet bleiben</string>
+    <string name="label_forgot_pw">Passwort vergessen?</string>
+    <string name="label_register">Registrieren</string>
+    <string name="label_create_shelf">Neues Regal</string>
+    <string name="label_name">Name</string>
+    <string name="label_loading">Lade</string>
+    <string name="label_please_wait">Bitte warten</string>
+    <string name="label_logout">Abmelden</string>
+    <string name="toast_login_failed">Anmeldung fehlgeschlagen!</string>
 </resources>

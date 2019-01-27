@@ -1,4 +1,4 @@
-package at.hometracker.database;
+package at.hometracker.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +11,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import at.hometracker.R;
+import at.hometracker.database.DatabaseListener;
+import at.hometracker.database.DatabaseMethod;
+import at.hometracker.database.DatabaseTask;
+import at.hometracker.database.datamodel.User;
 import at.hometracker.shared.Constants;
-import at.hometracker.shared.PasswordUtils;
-import at.hometracker.shared.SecurePassword;
-import at.hometracker.shared.Utils;
+import at.hometracker.utils.PasswordUtils;
+import at.hometracker.utils.SecurePassword;
+import at.hometracker.utils.Utils;
 
-public class DatabaseActivity extends AppCompatActivity {
+public class DatabaseActivity extends AppCompatActivity implements DatabaseListener {
 
     private TextView textView;
 
@@ -29,7 +33,8 @@ public class DatabaseActivity extends AppCompatActivity {
     }
 
     public void readFromDatabase(View view) {
-        new DatabaseTask(DatabaseMethod.SELECT_USERS, this.textView).execute();
+        DatabaseTask dbTask = new DatabaseTask(this, DatabaseMethod.SELECT_ALL_USERS, this);
+        dbTask.execute();
     }
 
     public void insertIntoDatabase(View view) {
@@ -51,7 +56,7 @@ public class DatabaseActivity extends AppCompatActivity {
                     InputStream fileStream = getContentResolver().openInputStream(data.getData());
                     if (fileStream.available() < Constants.FILE_MAX_SIZE) {
                         SecurePassword secPw = PasswordUtils.generateSecurePassword("testPW");
-                        DatabaseTask dbTask = new DatabaseTask(DatabaseMethod.INSERT_USER, null);
+                        DatabaseTask dbTask = new DatabaseTask(this, DatabaseMethod.INSERT_USER);
 
                         dbTask.execute("test@mail.com", "1000", "testUser", secPw.hashedPw, secPw.salt, fileStream);
                     }
@@ -65,6 +70,19 @@ public class DatabaseActivity extends AppCompatActivity {
             default:
                 System.out.println("Unrecognized requestcode: " + requestCode);
                 break;
+        }
+    }
+
+    @Override
+    public void receiveDatabaseResult(DatabaseMethod method, String result) {
+        switch (method) {
+            case SELECT_ALL_USERS:
+                StringBuilder textBuilder = new StringBuilder();
+                for (String row : result.split(Constants.PHP_ROW_SPLITTER)){
+                    User u = new User(row);
+                    textBuilder.append(String.format("%d: %s#%d (%s)%n", u.user_id, u.name, u.name_id, u.e_mail));
+                }
+                textView.setText(textBuilder.toString());
         }
     }
 }
