@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_login">
+        app:layout_constraintTop_toBottomOf="@id/toolbar_login">
 
         <EditText
             android:id="@+id/textfield_email"
@@ -79,6 +79,7 @@
 
             <Button
                 android:id="@+id/btn_register"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -86,6 +87,7 @@
 
             <Button
                 android:id="@+id/btn_login"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

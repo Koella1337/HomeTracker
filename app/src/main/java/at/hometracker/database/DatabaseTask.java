@@ -4,13 +4,14 @@ import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import at.hometracker.R;
 import at.hometracker.shared.Constants;
+import at.hometracker.utils.Consumer;
+import at.hometracker.utils.Utils;
 
 //AsyncTask<Params, Progress, Result>
 public class DatabaseTask extends AsyncTask<Object, Void, String> {
@@ -18,17 +19,13 @@ public class DatabaseTask extends AsyncTask<Object, Void, String> {
     private final DatabaseMethod methodToExecute;
 
     private final AlertDialog progressDialog;
-    private final DatabaseListener[] listeners;
+    private final Consumer<String> onFinishAction;
 
-    public DatabaseTask(AppCompatActivity executingActivity, DatabaseMethod methodToExecute, DatabaseListener... listeners) {
+    public DatabaseTask(AppCompatActivity executingActivity, DatabaseMethod methodToExecute, Consumer<String> onFinishAction) {
         this.methodToExecute = methodToExecute;
-        this.listeners = listeners;
+        this.onFinishAction = onFinishAction;
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(executingActivity);
-        View dialogView = executingActivity.getLayoutInflater().inflate(R.layout.dialog_loading, null);
-        dialogBuilder.setView(dialogView);
-
-        progressDialog = dialogBuilder.create();
+        progressDialog = Utils.buildAlertDialog(executingActivity, R.layout.dialog_loading);
         progressDialog.setCancelable(false);
     }
 
@@ -76,10 +73,8 @@ public class DatabaseTask extends AsyncTask<Object, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         Log.i("db", methodToExecute.name() + " result = {\"" + result + "\"}");
+        if (onFinishAction != null)
+            onFinishAction.accept(result);
         progressDialog.dismiss();
-
-        for (DatabaseListener l : listeners){
-            l.receiveDatabaseResult(methodToExecute, result);
-        }
     }
 }

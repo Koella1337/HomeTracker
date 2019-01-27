@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import at.hometracker.R;
-import at.hometracker.database.DatabaseListener;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.User;
@@ -20,7 +19,7 @@ import at.hometracker.utils.PasswordUtils;
 import at.hometracker.utils.SecurePassword;
 import at.hometracker.utils.Utils;
 
-public class DatabaseActivity extends AppCompatActivity implements DatabaseListener {
+public class DatabaseActivity extends AppCompatActivity {
 
     private TextView textView;
 
@@ -33,8 +32,14 @@ public class DatabaseActivity extends AppCompatActivity implements DatabaseListe
     }
 
     public void readFromDatabase(View view) {
-        DatabaseTask dbTask = new DatabaseTask(this, DatabaseMethod.SELECT_ALL_USERS, this);
-        dbTask.execute();
+        new DatabaseTask(this, DatabaseMethod.SELECT_ALL_USERS, result -> {
+            StringBuilder textBuilder = new StringBuilder();
+            for (String row : result.split(Constants.PHP_ROW_SPLITTER)){
+                User u = new User(row);
+                textBuilder.append(String.format("%d: %s (%s)%n", u.user_id, u.name, u.e_mail));
+            }
+            textView.setText(textBuilder.toString());
+        }).execute();
     }
 
     public void insertIntoDatabase(View view) {
@@ -56,9 +61,9 @@ public class DatabaseActivity extends AppCompatActivity implements DatabaseListe
                     InputStream fileStream = getContentResolver().openInputStream(data.getData());
                     if (fileStream.available() < Constants.FILE_MAX_SIZE) {
                         SecurePassword secPw = PasswordUtils.generateSecurePassword("testPW");
-                        DatabaseTask dbTask = new DatabaseTask(this, DatabaseMethod.INSERT_USER);
+                        DatabaseTask dbTask = new DatabaseTask(this, DatabaseMethod.INSERT_USER, null);
 
-                        dbTask.execute("test@mail.com", "1000", "testUser", secPw.hashedPw, secPw.salt, fileStream);
+                        dbTask.execute("test@mail.com", "testUser", secPw.hashedPw, secPw.salt, fileStream);
                     }
                     else {
                         Log.e("db", "File too large for upload!");
@@ -73,16 +78,4 @@ public class DatabaseActivity extends AppCompatActivity implements DatabaseListe
         }
     }
 
-    @Override
-    public void receiveDatabaseResult(DatabaseMethod method, String result) {
-        switch (method) {
-            case SELECT_ALL_USERS:
-                StringBuilder textBuilder = new StringBuilder();
-                for (String row : result.split(Constants.PHP_ROW_SPLITTER)){
-                    User u = new User(row);
-                    textBuilder.append(String.format("%d: %s#%d (%s)%n", u.user_id, u.name, u.name_id, u.e_mail));
-                }
-                textView.setText(textBuilder.toString());
-        }
-    }
 }

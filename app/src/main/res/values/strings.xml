@@ -21,4 +21,13 @@
     <string name="label_please_wait">Please wait</string>
     <string name="label_logout">Log out</string>
     <string name="toast_login_failed">Login failed!</string>
+    <string name="toast_registration_failed">Registration failed!</string>
+    <string name="toast_registration_success">Registration successful!</string>
+    <string name="toast_groupcreation_success">"Group created: "</string>
+    <string name="toast_groupcreation_failed">Creation failed!</string>
+    <string name="toast_edittext_invalid">All fields must have at least 4 characters and can only contain letters, numbers, spaces, \"_\" and \"-\".</string>
+    <string name="label_new_group">New group</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_ok" translatable="false">OK</string>
+    <string name="toast_email_invalid">Invalid E-Mail address!</string>
 </resources>

@@ -11,11 +11,11 @@
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/label_create_group"
         android:textSize="20sp"
-        android:textStyle="bold"/>
-s
+        android:textStyle="bold" />
+
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/create_group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -23,5 +23,7 @@ s
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/label_name"
-        android:inputType="textEmailAddress" />
+        android:inputType="textPersonName"
+        android:text="@string/label_new_group" />
+
 </LinearLayout>
