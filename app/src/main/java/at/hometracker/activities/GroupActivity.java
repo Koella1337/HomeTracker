@@ -1,7 +1,6 @@
 package at.hometracker.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,17 +9,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,10 +27,7 @@ import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.qrcode.ReaderActivity;
 import at.hometracker.shared.Constants;
-import at.hometracker.shared.HometrackerFileProvider;
 import at.hometracker.utils.CameraUtils;
-import at.hometracker.utils.PasswordUtils;
-import at.hometracker.utils.SecurePassword;
 
 import static at.hometracker.shared.Constants.PHP_ERROR_PREFIX;
 import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
@@ -56,7 +47,7 @@ public class GroupActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_group);
         setSupportActionBar(myToolbar);
 
-        group_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_GROUP_ID, -1);
+        group_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_GROUP_ID, -1);
         Log.v("misc", "Started GroupActivity with group_id: \"" + group_id + "\"");
         if (group_id == -1)
             throw new RuntimeException("Invalid group_id on GroupActivity creation!");
@@ -91,7 +82,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private void openShelfActivity(int shelf_id) {
         Intent shelfIntent = new Intent(this, ShelfActivity.class);
-        shelfIntent.putExtra(Constants.INTENT_EXTRANAME_SHELF_ID, shelf_id);
+        shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, shelf_id);
         startActivity(shelfIntent);
     }
 
