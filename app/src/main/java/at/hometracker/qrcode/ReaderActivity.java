@@ -25,11 +25,11 @@ public class ReaderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 IntentIntegrator integrator = new IntentIntegrator(activity);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
                 integrator.setPrompt("Scan");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(true);
-                integrator.setBarcodeImageEnabled(false);
+                integrator.setBarcodeImageEnabled(true);
                 integrator.initiateScan();
             }
         });
