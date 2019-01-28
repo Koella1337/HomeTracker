@@ -2,6 +2,7 @@ package at.hometracker.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,9 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +30,8 @@ import at.hometracker.app.ShelfGridAdapter;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Shelf;
+import at.hometracker.qrcode.QRCodeMainActivity;
+import at.hometracker.qrcode.ReaderActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.shared.HometrackerFileProvider;
 import at.hometracker.utils.CameraUtils;
@@ -52,7 +58,8 @@ public class GroupActivity extends AppCompatActivity {
 
         group_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_GROUP_ID, -1);
         Log.v("misc", "Started GroupActivity with group_id: \"" + group_id + "\"");
-        if (group_id == -1) throw new RuntimeException("Invalid group_id on GroupActivity creation!");
+        if (group_id == -1)
+            throw new RuntimeException("Invalid group_id on GroupActivity creation!");
     }
 
     @Override
@@ -68,7 +75,7 @@ public class GroupActivity extends AppCompatActivity {
         new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP, (task, result) -> {
             if (result == null || result.isEmpty())
                 return;
-            for (String row : result.split(PHP_ROW_SPLITTER)){
+            for (String row : result.split(PHP_ROW_SPLITTER)) {
                 shelves.add(new Shelf(row));
             }
             shelfGridAdapter = new ShelfGridAdapter(GroupActivity.this, shelves);
@@ -82,7 +89,7 @@ public class GroupActivity extends AppCompatActivity {
         }).execute(group_id);
     }
 
-    private void openShelfActivity(int shelf_id){
+    private void openShelfActivity(int shelf_id) {
         Intent shelfIntent = new Intent(this, ShelfActivity.class);
         shelfIntent.putExtra(Constants.INTENT_EXTRANAME_SHELF_ID, shelf_id);
         startActivity(shelfIntent);
@@ -101,6 +108,10 @@ public class GroupActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_create_shelf:
                 CameraUtils.requestPicture(this);
+                return true;
+            case R.id.action_camera:
+                Intent scanIntent = new Intent(this, ReaderActivity.class);
+                startActivity(scanIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -121,13 +132,12 @@ public class GroupActivity extends AppCompatActivity {
                 String shelfName = "Test Shelf " + new Random().nextInt(10000);
 
                 new DatabaseTask(GroupActivity.this, DatabaseMethod.INSERT_SHELF, (task, result) -> {
-                    if (result == null || result.startsWith(PHP_ERROR_PREFIX)){
+                    if (result == null || result.startsWith(PHP_ERROR_PREFIX)) {
                         if (result.equals(Constants.FILE_TOO_LARGE_ERROR))
                             Toast.makeText(GroupActivity.this, R.string.toast_file_too_large, Toast.LENGTH_LONG).show();
                         else
                             Toast.makeText(GroupActivity.this, R.string.toast_shelfcreation_failed, Toast.LENGTH_LONG).show();
-                    }
-                    else
+                    } else
                         Toast.makeText(GroupActivity.this, R.string.toast_shelfcreation_success, Toast.LENGTH_LONG).show();
                 }).execute(shelfName, group_id, CameraUtils.getPictureAsInputStream(this));
                 break;

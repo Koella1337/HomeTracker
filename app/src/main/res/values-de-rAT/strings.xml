@@ -31,4 +31,5 @@
     <string name="toast_shelfcreation_failed">Regal-Erstellung fehlgeschlagen!</string>
     <string name="toast_shelfcreation_success">Regal erstellt!</string>
     <string name="toast_file_too_large">Bild zu groß zum Hochladen!</string>
+    <string name="label_generate_qr">Generiere QR</string>
 </resources>

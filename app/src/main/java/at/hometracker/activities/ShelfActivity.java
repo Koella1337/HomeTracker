@@ -1,5 +1,7 @@
 package at.hometracker.activities;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +13,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+
 import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Shelf;
+import at.hometracker.qrcode.GeneratorActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.FileUtils;
 
@@ -52,8 +61,15 @@ public class ShelfActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                Log.i("menu clicked","action_settings");
+            case R.id.action_generate_qr:
+                Log.i("menu clicked","action_generate_qr");
+
+                String qrCodeString = "shelf_"+shelf_id;
+
+                Intent shelfIntent = new Intent(this, GeneratorActivity.class);
+                shelfIntent.putExtra(Constants.INTENT_EXTRANAME_QR_STRING, qrCodeString);
+                startActivity(shelfIntent);
+
                 return true;
             case R.id.action_logout:
                 Log.i("menu clicked","action_logout");
