@@ -1,12 +1,8 @@
 package at.hometracker.qrcode;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
@@ -29,7 +25,7 @@ public class GeneratorActivity extends AppCompatActivity {
 
         image = (ImageView) findViewById(R.id.image);
 
-        String qrString = getIntent().getStringExtra(Constants.INTENT_EXTRANAME_QR_STRING);
+        String qrString = getIntent().getStringExtra(Constants.INTENT_EXTRA_QR_STRING);
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {

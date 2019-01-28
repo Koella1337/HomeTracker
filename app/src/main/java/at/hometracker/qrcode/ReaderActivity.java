@@ -41,7 +41,7 @@ public class ReaderActivity extends AppCompatActivity {
         Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
         Intent shelfIntent = new Intent(this, ShelfActivity.class);
 
-        shelfIntent.putExtra(Constants.INTENT_EXTRANAME_SHELF_ID, Integer.parseInt("0"+qrCodeDecoded.replace("shelf_","")));
+        shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, Integer.parseInt("0"+qrCodeDecoded.replace("shelf_","")));
         startActivity(shelfIntent);
         finish();
     }

@@ -65,8 +65,8 @@ public class ShelfGridAdapter extends BaseAdapter {
         CircleImageView openMapButton = thumbnailView.findViewById(R.id.open_map_button);
         openMapButton.setOnClickListener(view -> {
             Intent mapIntent = new Intent(mContext, MapActivity.class);
-            mapIntent.putExtra(Constants.INTENT_EXTRANAME_GROUP_ID, shelf.group_id);
-            mapIntent.putExtra(Constants.INTENT_EXTRANAME_SHELF_ID, shelf.shelf_id);
+            mapIntent.putExtra(Constants.INTENT_EXTRA_GROUP_ID, shelf.group_id);
+            mapIntent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, shelf.shelf_id);
             mContext.startActivity(mapIntent);
         });
 
