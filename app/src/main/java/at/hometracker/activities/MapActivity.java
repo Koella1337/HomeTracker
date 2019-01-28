@@ -3,6 +3,8 @@ package at.hometracker.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.hardware.camera2.params.MeteringRectangle;
 import android.support.constraint.ConstraintLayout;
@@ -32,6 +34,7 @@ import at.hometracker.R;
 import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.CameraUtils;
+import at.hometracker.utils.FileUtils;
 import at.hometracker.utils.Utils;
 
 public class MapActivity extends AppCompatActivity {
@@ -45,6 +48,9 @@ public class MapActivity extends AppCompatActivity {
     private Button newShelfButton;
     private Button okButton;
     private Button cancelbutton;
+
+    private DrawableRect created;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,19 +110,6 @@ public class MapActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUESTCODE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            byte[] imageData = CameraUtils.getPictureByteArrayFromCameraResponse(data);
-            Log.i("onActivityResult ok", "requestCode " + requestCode + " data length: " + imageData.length);
-
-            //TODO do something with the image
-
-        } else {
-            Log.i("onActivityResult not ok", "requestCode " + requestCode);
-        }
-
-    }
 
     public void createShelf(View view, AlertDialog shelfCreationDialog) {
         Log.i("MapActivity", "createShelf");
@@ -129,9 +122,24 @@ public class MapActivity extends AppCompatActivity {
 
         CameraUtils.requestPicture(this);
 
-        DrawableRect created = this.mapView.finishShelfDraw();
+        created = this.mapView.finishShelfDraw();
         String shelfName = textShelfName.getText().toString();
         created.setName(shelfName);
+
+        mapView.refresh();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUESTCODE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            byte[] imageData = CameraUtils.getPictureByteArrayFromCameraResponse(data);
+            Log.i("onActivityResult ok", "requestCode " + requestCode + " data length: " + imageData.length);
+
+            created.setImageData(imageData);
+            created = null;
+        } else {
+            Log.i("onActivityResult not ok", "requestCode " + requestCode);
+        }
 
         mapView.refresh();
     }
@@ -156,6 +164,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private class DrawableRect {
+        private byte[] imageData;
         private Rect rect;
         private String name;
 
@@ -184,6 +193,13 @@ public class MapActivity extends AppCompatActivity {
             this.name = name;
         }
 
+        public byte[] getImageData() {
+            return imageData;
+        }
+
+        public void setImageData(byte[] imageData) {
+            this.imageData = imageData;
+        }
     }
 
 
@@ -247,7 +263,20 @@ public class MapActivity extends AppCompatActivity {
 
             for (DrawableRect d : drawableRectList) {
                 canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, paint);
-                canvas.drawText(d.getName(), d.rect.left + 50, (d.rect.top + d.rect.bottom) / 2, paint);
+
+                Paint textPaint = new Paint();
+                textPaint.setStyle(Paint.Style.FILL);
+                textPaint.setColor(Color.DKGRAY);
+                textPaint.setStrokeWidth(3);
+                textPaint.setTextSize(50);
+
+                canvas.drawText(d.getName(), d.rect.left + 50, (d.rect.top + d.rect.bottom) / 2, textPaint);
+
+                if(d.imageData != null){ // TODO remove, used for debugging
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(d.imageData, 0, d.imageData.length);
+                    canvas.drawBitmap(bitmap, d.rect.left,d.rect.top, null);
+                }
+
             }
         }
 
