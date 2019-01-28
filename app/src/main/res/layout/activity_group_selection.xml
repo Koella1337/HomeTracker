@@ -36,15 +36,6 @@
                 tools:layout_editor_absoluteY="508dp" />
 
             <Button
-                android:id="@+id/button_gridview"
-                android:layout_width="139dp"
-                android:layout_height="58dp"
-                android:onClick="openGridActivity"
-                android:text="open GRID activity"
-                tools:layout_editor_absoluteX="211dp"
-                tools:layout_editor_absoluteY="392dp" />
-
-            <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
