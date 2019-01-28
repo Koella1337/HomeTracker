@@ -1,6 +1,7 @@
 package at.hometracker.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,27 +9,39 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import at.hometracker.R;
-import at.hometracker.app.CustomGridAdapter;
-import at.hometracker.app.Thumbnail;
+import at.hometracker.app.ShelfGridAdapter;
+import at.hometracker.database.DatabaseMethod;
+import at.hometracker.database.DatabaseTask;
+import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.shared.Constants;
+import at.hometracker.shared.HometrackerFileProvider;
 import at.hometracker.utils.CameraUtils;
-import at.hometracker.utils.FileUtils;
+import at.hometracker.utils.PasswordUtils;
+import at.hometracker.utils.SecurePassword;
+
+import static at.hometracker.shared.Constants.PHP_ERROR_PREFIX;
+import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
 
 public class GroupActivity extends AppCompatActivity {
 
-    private CustomGridAdapter shelfGridAdapter;
-    private List<Thumbnail> thumbnailList = null;
+    private int group_id;
+
+    private ShelfGridAdapter shelfGridAdapter;
+    private List<Shelf> shelves = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,48 +50,42 @@ public class GroupActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_group);
         setSupportActionBar(myToolbar);
 
-        GridView mainGrid = (GridView) findViewById(R.id.mainGrid);
-
-        initTestImageListIfNecessary();
-
-        shelfGridAdapter = new CustomGridAdapter(GroupActivity.this, thumbnailList);
-        mainGrid.setAdapter(shelfGridAdapter);
-
-        mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(GroupActivity.this, "You Clicked at " + thumbnailList.get(position).getName(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(GroupActivity.this, ShelfActivity.class);
-                intent.putExtra("info", "This is activity from card item index  " + position);
-                startActivity(intent);
-            }
-        });
+        group_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_GROUP_ID, -1);
+        Log.v("misc", "Started GroupActivity with group_id: \"" + group_id + "\"");
+        if (group_id == -1) throw new RuntimeException("Invalid group_id on GroupActivity creation!");
     }
 
-    private void initTestImageListIfNecessary(){
-        if(this.thumbnailList != null){
-            return;
-        }
-        thumbnailList = new ArrayList<>();
-        try {
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max1"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "grimma.png"), "grimma"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "Homura_BG2.jpg"), "Homura_BG2"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max2"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max3"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max4"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max5"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max6"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max7"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max8"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max9"));
-            thumbnailList.add(new Thumbnail(FileUtils.getByteArrayForFile(this, "max-the-magician.jpg"), "max10"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.i("initTestImageList", "list initialized");
+    @Override
+    protected void onStart() {
+        super.onStart();
+        clearAndFetchShelves();
+    }
+
+    private void clearAndFetchShelves() {
+        GridView grid = findViewById(R.id.shelf_grid);
+        shelves = new ArrayList<>();
+
+        new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP, (task, result) -> {
+            if (result == null || result.isEmpty())
+                return;
+            for (String row : result.split(PHP_ROW_SPLITTER)){
+                shelves.add(new Shelf(row));
+            }
+            shelfGridAdapter = new ShelfGridAdapter(GroupActivity.this, shelves);
+            grid.setAdapter(shelfGridAdapter);
+
+            grid.setOnItemClickListener((parent, view, position, id) -> {
+                Toast.makeText(GroupActivity.this, "Opening shelf with ID: " + shelves.get(position).shelf_id, Toast.LENGTH_SHORT).show();
+                openShelfActivity(shelves.get(position).shelf_id);
+            });
+            shelfGridAdapter.notifyDataSetChanged();
+        }).execute(group_id);
+    }
+
+    private void openShelfActivity(int shelf_id){
+        Intent shelfIntent = new Intent(this, ShelfActivity.class);
+        shelfIntent.putExtra(Constants.INTENT_EXTRANAME_SHELF_ID, shelf_id);
+        startActivity(shelfIntent);
     }
 
     @Override
@@ -93,7 +100,6 @@ public class GroupActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_create_shelf:
-                Log.i("menu clicked", "action_create_shelf");
                 CameraUtils.requestPicture(this);
                 return true;
             default:
@@ -103,14 +109,32 @@ public class GroupActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUESTCODE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            byte[] imageData = CameraUtils.getPictureByteArrayFromCameraResponse(data);
-            Log.i("onActivityResult ok", "requestCode " + requestCode+" data length: "+imageData.length);
-            thumbnailList.get(0).setImageData(imageData);
-        }else{
-            Log.i("onActivityResult not ok", "requestCode " + requestCode);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK) {
+            Log.v("misc", "Non-OK resultCode! (" + resultCode + ")");
+            return;
         }
 
+        switch (requestCode) {
+            case Constants.REQUESTCODE_IMAGE_CAPTURE:
+                String shelfName = "Test Shelf " + new Random().nextInt(10000);
+
+                new DatabaseTask(GroupActivity.this, DatabaseMethod.INSERT_SHELF, (task, result) -> {
+                    if (result == null || result.startsWith(PHP_ERROR_PREFIX)){
+                        if (result.equals(Constants.FILE_TOO_LARGE_ERROR))
+                            Toast.makeText(GroupActivity.this, R.string.toast_file_too_large, Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(GroupActivity.this, R.string.toast_shelfcreation_failed, Toast.LENGTH_LONG).show();
+                    }
+                    else
+                        Toast.makeText(GroupActivity.this, R.string.toast_shelfcreation_success, Toast.LENGTH_LONG).show();
+                }).execute(shelfName, group_id, CameraUtils.getPictureAsInputStream(this));
+                break;
+            default:
+                System.out.println("Unrecognized requestcode: " + requestCode);
+                break;
+        }
     }
 
 

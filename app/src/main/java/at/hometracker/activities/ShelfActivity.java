@@ -7,12 +7,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import at.hometracker.R;
+import at.hometracker.database.DatabaseMethod;
+import at.hometracker.database.DatabaseTask;
+import at.hometracker.database.datamodel.Shelf;
+import at.hometracker.shared.Constants;
+import at.hometracker.utils.FileUtils;
 
 public class ShelfActivity extends AppCompatActivity {
+
+    private int shelf_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +29,16 @@ public class ShelfActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_shelf);
         setSupportActionBar(myToolbar);
 
-        if(getIntent() != null)
-        {
-            String info = getIntent().getStringExtra("info");
-            Toast.makeText(ShelfActivity.this, info, Toast.LENGTH_SHORT).show();
-        }
+        shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_SHELF_ID, -1);
+        Log.v("misc", "Started ShelfActivity with shelf_id: \"" + shelf_id + "\"");
+        if (shelf_id == -1) throw new RuntimeException("Invalid shelf_id on ShelfActivity creation!");
+
+        ImageView imageView = findViewById(R.id.shelf_img);
+        new DatabaseTask(this, DatabaseMethod.SELECT_SHELF, (task, result) -> {
+            Shelf shelf = new Shelf(result.split(Constants.PHP_ROW_SPLITTER)[0]);
+            Log.v("misc", "Entered shelf: " + shelf);
+            FileUtils.setImageViewWithByteArray(imageView, shelf.picture);
+        }).execute(shelf_id);
     }
 
     @Override

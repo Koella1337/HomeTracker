@@ -3,7 +3,6 @@ package at.hometracker.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,9 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import at.hometracker.TouchDrawActivity;
 import java.util.List;
@@ -33,7 +30,6 @@ import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.FileUtils;
 import at.hometracker.utils.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
@@ -47,13 +43,22 @@ public class GroupSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_selection);
         Toolbar myToolbar = findViewById(R.id.toolbar_groupselection);
         setSupportActionBar(myToolbar);
-        setOnClickListeners();
 
         int user_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_USER_ID, -1);
-        Log.i("login", "Started GroupSelectionActivity with user_id: \"" + user_id + "\"");
+        Log.v("misc", "Started GroupSelectionActivity with user_id: \"" + user_id + "\"");
         if (user_id == -1) throw new RuntimeException("Invalid user_id on GroupSelectionActivity creation!");
 
         this.user_id = user_id;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        clearAndFetchGroups();
+    }
+
+    private void clearAndFetchGroups() {
+        ((LinearLayout) findViewById(R.id.layout_groups)).removeAllViews();
 
         DatabaseTask fetchGroups = new DatabaseTask(this, DatabaseMethod.SELECT_GROUPS_FOR_USER, (task, result) -> {
             if (result == null || result.isEmpty())
@@ -86,21 +91,17 @@ public class GroupSelectionActivity extends AppCompatActivity {
         if (!Utils.validateEditTexts(this, textGroupName))
             return;
 
+        String groupName = textGroupName.getText().toString();
         try {
-            String groupName = textGroupName.getText().toString();
-            InputStream defaultPicture = getAssets().open(Constants.DEFAULT_PROFILE_PICTURE_NAME);
-
             new DatabaseTask(this, DatabaseMethod.INSERT_GROUP, (task, result) -> {
                 if (result == null || result.startsWith(Constants.PHP_ERROR_PREFIX)){
                     Toast.makeText(this, R.string.toast_groupcreation_failed, Toast.LENGTH_LONG).show();
                 }
                 else {
-                    int group_id = Integer.parseInt(result);
-
-                    addGroupViews(new Group(group_id, groupName, null, null, FileUtils.toByteArray(defaultPicture)));
+                    clearAndFetchGroups();
                     Toast.makeText(this, getString(R.string.toast_groupcreation_success) + groupName, Toast.LENGTH_LONG).show();
                 }
-            }).execute(user_id, groupName, getAssets().open(Constants.DEFAULT_PROFILE_PICTURE_NAME));
+            }).execute(user_id, groupName, getAssets().open(Constants.DEFAULT_GROUP_PICTURE_NAME));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,10 +179,6 @@ public class GroupSelectionActivity extends AppCompatActivity {
     public void openTouchDrawActivity(View view){
         Intent intent = new Intent(GroupSelectionActivity.this, TouchDrawActivity.class);
         startActivity(intent);
-    }
-
-    private void setOnClickListeners() {
-        //TODO
     }
 
 }

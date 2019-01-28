@@ -28,4 +28,7 @@
     <string name="label_cancel">Abbrechen</string>
     <string name="toast_email_invalid">Ungültige E-Mail Adresse!</string>
     <string name="label_shelf">Regal</string>
+    <string name="toast_shelfcreation_failed">Regal-Erstellung fehlgeschlagen!</string>
+    <string name="toast_shelfcreation_success">Regal erstellt!</string>
+    <string name="toast_file_too_large">Bild zu groß zum Hochladen!</string>
 </resources>

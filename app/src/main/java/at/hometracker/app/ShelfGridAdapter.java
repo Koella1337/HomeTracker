@@ -1,6 +1,7 @@
 package at.hometracker.app;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +12,26 @@ import android.widget.TextView;
 import java.util.List;
 
 import at.hometracker.R;
+import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.utils.FileUtils;
 
-public class CustomGridAdapter extends BaseAdapter {
+public class ShelfGridAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Thumbnail> imageList;
+    private List<Shelf> shelves;
 
-    public CustomGridAdapter(Context mContext, List<Thumbnail> imageList) {
+    public ShelfGridAdapter(Context mContext, List<Shelf> shelves) {
         this.mContext = mContext;
-        this.imageList = imageList;
+        this.shelves = shelves;
     }
 
     @Override
     public int getCount() {
-        return imageList.size();
+        return shelves.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return imageList.get(position);
+        return shelves.get(position);
     }
 
     @Override
@@ -40,23 +42,23 @@ public class CustomGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View grid;
+        View thumbnailView;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-            grid = new View(mContext);
-            grid = inflater.inflate(R.layout.single_shelf_preview, null);
+            thumbnailView = inflater.inflate(R.layout.single_shelf_preview, null);
         } else {
-            grid = (View) convertView;
+            thumbnailView = convertView;
         }
 
-        //TODO improve performance by not setting it every time getView() is called
-        TextView textView = (TextView) grid.findViewById(R.id.txtInfo);
-        ImageView imageView = (ImageView) grid.findViewById(R.id.thumbnailImage);
-        textView.setText(imageList.get(position).getName());
-        FileUtils.setImageViewWithByteArray(imageView, imageList.get(position).getImageData());
+        Shelf shelf = shelves.get(position);
+        Log.v("misc", "Creating view for: " + shelf);
+        TextView textView = thumbnailView.findViewById(R.id.thumbnail_txt);
+        ImageView imageView = thumbnailView.findViewById(R.id.thumbnail_img);
+        textView.setText(shelf.name);
+        FileUtils.setImageViewWithByteArray(imageView, shelf.picture);
 
-        return grid;
+        return thumbnailView;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package at.hometracker.database;
 
-import android.util.Base64;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,7 +10,6 @@ import java.net.URL;
 
 import at.hometracker.shared.Constants;
 
-import static at.hometracker.shared.Constants.PHP_FILE_PREFIX;
 import static at.hometracker.shared.Constants.crlf;
 
 public class MultipartPost {
@@ -114,6 +111,15 @@ public class MultipartPost {
         } else {
             httpConn.disconnect();
             throw new IOException("Server returned non-OK status: " + status);
+        }
+    }
+
+    public void cancel() {
+        try {
+            request.close();
+            httpConn.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

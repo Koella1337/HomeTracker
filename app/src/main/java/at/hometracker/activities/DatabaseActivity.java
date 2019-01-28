@@ -66,7 +66,7 @@ public class DatabaseActivity extends AppCompatActivity {
                         dbTask.execute("test@mail.com", "testUser", secPw.hashedPw, secPw.salt, fileStream);
                     }
                     else {
-                        Log.e("db", "File too large for upload!");
+                        Log.i("dbResult", "File too large for upload!");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

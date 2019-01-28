@@ -36,7 +36,10 @@ public abstract class AbstractDatabaseObject {
                             field.set(this, value);
                             break;
                         case "int":
-                            field.setInt(this, Integer.parseInt(value));
+                            if (value == null || value.isEmpty())
+                                field.setInt(this, 0);
+                            else
+                                field.setInt(this, Integer.parseInt(value));
                             break;
                         default:
                             Log.e("db", String.format("Illegal field type (%s) in %s", field.getType().getSimpleName(), this.getClass().getSimpleName()));

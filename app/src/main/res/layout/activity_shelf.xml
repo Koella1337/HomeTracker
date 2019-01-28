@@ -18,7 +18,7 @@
 
 
     <ImageView
-        android:id="@+id/shelf_iv"
+        android:id="@+id/shelf_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentTop="false"
