@@ -2,6 +2,7 @@ package at.hometracker.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.hardware.camera2.params.MeteringRectangle;
 import android.support.constraint.ConstraintLayout;
@@ -23,14 +24,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import at.hometracker.R;
+import at.hometracker.database.datamodel.Shelf;
+import at.hometracker.shared.Constants;
+import at.hometracker.utils.CameraUtils;
 import at.hometracker.utils.Utils;
 
 public class MapActivity extends AppCompatActivity {
 
     private static final int RASTER_SIZE = 50;
+
 
     private List<DrawableRect> drawableRectList = new ArrayList<>();
     private CustomImageView mapView;
@@ -65,6 +72,14 @@ public class MapActivity extends AppCompatActivity {
         mapView.invalidate();
     }
 
+
+    public void initDrawableRectListWithShelfs(List<Shelf> shelfList) {
+        for (Shelf s : shelfList) {
+            DrawableRect rect = new DrawableRect(s.posX, s.posY, s.posX + s.sizeX, s.posY + s.sizeY);
+            rect.setName(s.name);
+        }
+    }
+
     private void setMarginsForMap() {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -80,27 +95,44 @@ public class MapActivity extends AppCompatActivity {
 
     public void finishShelfDraw(View view) {
         displayNewShelfButtonAndMakeOKandCancelInvisible();
-        DrawableRect created = this.mapView.finishShelfDraw();
-
         AlertDialog alertDialog = Utils.buildAlertDialog(this, R.layout.dialog_create_shelf);
         Utils.setAlertDialogButtons(alertDialog,
-                getString(R.string.label_create_shelf), (dialog, id) -> createShelf(alertDialog, created),
-                getString(R.string.label_cancel), (dialog, id) -> Log.i("MapActivity", " cancelled shelf creation.")
+                getString(R.string.label_create_shelf), (dialog, id) -> createShelf(view, alertDialog),
+                getString(R.string.label_cancel), (dialog, id) -> cancelShelfDraw(view)
         );
         alertDialog.setCancelable(false);
         alertDialog.show();
     }
 
-    public void createShelf(AlertDialog shelfCreationDialog, DrawableRect created) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUESTCODE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            byte[] imageData = CameraUtils.getPictureByteArrayFromCameraResponse(data);
+            Log.i("onActivityResult ok", "requestCode " + requestCode + " data length: " + imageData.length);
+
+            //TODO do something with the image
+
+        } else {
+            Log.i("onActivityResult not ok", "requestCode " + requestCode);
+        }
+
+    }
+
+    public void createShelf(View view, AlertDialog shelfCreationDialog) {
         Log.i("MapActivity", "createShelf");
 
         EditText textShelfName = shelfCreationDialog.findViewById(R.id.shelf_name_edittext);
         if (!Utils.validateEditTexts(this, textShelfName)) {
+            cancelShelfDraw(view);
             return;
         }
 
+        CameraUtils.requestPicture(this);
+
+        DrawableRect created = this.mapView.finishShelfDraw();
         String shelfName = textShelfName.getText().toString();
         created.setName(shelfName);
+
         mapView.refresh();
     }
 
@@ -145,12 +177,13 @@ public class MapActivity extends AppCompatActivity {
         }
 
         public String getName() {
-            return name;
+            return name == null ? "" : name;
         }
 
         public void setName(String name) {
             this.name = name;
         }
+
     }
 
 
@@ -210,11 +243,11 @@ public class MapActivity extends AppCompatActivity {
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.DKGRAY);
             paint.setStrokeWidth(3);
-            paint.setTextSize(30);
+            paint.setTextSize(50);
 
             for (DrawableRect d : drawableRectList) {
                 canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, paint);
-                canvas.drawText("n"+d.getName(),d.rect.left+ 10, d.rect.top+10, new Paint(Color.BLACK));
+                canvas.drawText(d.getName(), d.rect.left + 50, (d.rect.top + d.rect.bottom) / 2, paint);
             }
         }
 
