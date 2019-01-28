@@ -6,7 +6,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" android:required="true" />/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -16,9 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TouchDrawActivity"></activity>
-        <activity
-            android:name=".activities.LoginActivity">
+
+        <activity android:name=".activities.MapActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +36,7 @@
         <activity android:name=".qrcode.ReaderActivity" />
         <activity android:name=".activities.ShelfActivity" />
         <activity android:name=".activities.ClickableImageTestActivity" />
+        <activity android:name=".activities.FingerPaintActivity_DELETEME"/>
     </application>
 
 </manifest>

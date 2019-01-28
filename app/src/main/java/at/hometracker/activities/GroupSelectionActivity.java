@@ -3,7 +3,6 @@ package at.hometracker.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import at.hometracker.TouchDrawActivity;
 import java.util.List;
 
 import at.hometracker.R;
@@ -33,7 +30,6 @@ import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.FileUtils;
 import at.hometracker.utils.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
@@ -171,12 +167,12 @@ public class GroupSelectionActivity extends AppCompatActivity {
     }
 
     public void openClickableAreaActivity(View view){
-        Intent intent = new Intent(this, ClickableImageTestActivity.class);
+        Intent intent = new Intent(this, FingerPaintActivity_DELETEME.class);
         startActivity(intent);
     }
 
     public void openTouchDrawActivity(View view){
-        Intent intent = new Intent(GroupSelectionActivity.this, TouchDrawActivity.class);
+        Intent intent = new Intent(GroupSelectionActivity.this, MapActivity.class);
         startActivity(intent);
     }
 

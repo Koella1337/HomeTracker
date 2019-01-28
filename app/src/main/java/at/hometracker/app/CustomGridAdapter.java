@@ -59,6 +59,8 @@ public class CustomGridAdapter extends BaseAdapter {
         return grid;
     }
 
+
+
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
