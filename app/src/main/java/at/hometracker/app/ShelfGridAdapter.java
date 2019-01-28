@@ -1,6 +1,7 @@
 package at.hometracker.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import at.hometracker.R;
+import at.hometracker.activities.MapActivity;
 import at.hometracker.database.datamodel.Shelf;
+import at.hometracker.shared.Constants;
 import at.hometracker.utils.FileUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ShelfGridAdapter extends BaseAdapter {
     private Context mContext;
@@ -58,9 +62,16 @@ public class ShelfGridAdapter extends BaseAdapter {
         textView.setText(shelf.name);
         FileUtils.setImageViewWithByteArray(imageView, shelf.picture);
 
+        CircleImageView openMapButton = thumbnailView.findViewById(R.id.open_map_button);
+        openMapButton.setOnClickListener(view -> {
+            Intent mapIntent = new Intent(mContext, MapActivity.class);
+            mapIntent.putExtra(Constants.INTENT_EXTRANAME_GROUP_ID, shelf.group_id);
+            mapIntent.putExtra(Constants.INTENT_EXTRANAME_SHELF_ID, shelf.shelf_id);
+            mContext.startActivity(mapIntent);
+        });
+
         return thumbnailView;
     }
-
 
 
     @Override

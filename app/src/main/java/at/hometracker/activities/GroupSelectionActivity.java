@@ -177,6 +177,7 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
     public void openTouchDrawActivity(View view){
         Intent intent = new Intent(GroupSelectionActivity.this, MapActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRANAME_GROUP_ID, 12);
         startActivity(intent);
     }
 
