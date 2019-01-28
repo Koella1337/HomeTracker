@@ -15,7 +15,7 @@
     <string name="label_forgot_pw">Forgot password?</string>
     <string name="label_register">Register</string>
     <string name="label_email" translatable="false">E-Mail</string>
-    <string name="label_create_shelf">New shelf</string>
+    <string name="label_create_shelf">Create Shelf</string>
     <string name="label_name">Name</string>
     <string name="label_loading">Loading</string>
     <string name="label_please_wait">Please wait</string>

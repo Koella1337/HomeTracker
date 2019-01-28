@@ -61,6 +61,8 @@ public class ShelfGridAdapter extends BaseAdapter {
         return thumbnailView;
     }
 
+
+
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();

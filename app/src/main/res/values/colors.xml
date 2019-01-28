@@ -4,7 +4,7 @@
     <color name="colorPrimary">@color/md_light_blue_700</color>
 
     <!-- Notification bar color -->
-    <color name="colorPrimaryDark">#ebebeb</color>
+    <color name="colorPrimaryDark">@color/md_light_blue_800</color>
 
     <!-- color for e.g. inputfield 'underline' -->
     <color name="colorAccent">#8BE8FF</color>

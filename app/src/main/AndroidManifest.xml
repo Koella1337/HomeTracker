@@ -19,9 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".TouchDrawActivity" />
-        <activity
-            android:name=".activities.LoginActivity">
+        <activity android:name=".activities.MapActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,8 +35,9 @@
         <activity android:name=".qrcode.ReaderActivity" />
         <activity android:name=".activities.ShelfActivity" />
         <activity android:name=".activities.ClickableImageTestActivity" />
-
-        <provider
+        <activity android:name=".activities.FingerPaintActivity_DELETEME"/>
+		
+		<provider
             android:name=".shared.HometrackerFileProvider"
             android:authorities="com.at.hometracker.provider"
             android:exported="false"

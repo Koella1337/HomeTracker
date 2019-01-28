@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import at.hometracker.TouchDrawActivity;
 import java.util.List;
 
 import at.hometracker.R;
@@ -172,12 +171,12 @@ public class GroupSelectionActivity extends AppCompatActivity {
     }
 
     public void openClickableAreaActivity(View view){
-        Intent intent = new Intent(this, ClickableImageTestActivity.class);
+        Intent intent = new Intent(this, FingerPaintActivity_DELETEME.class);
         startActivity(intent);
     }
 
     public void openTouchDrawActivity(View view){
-        Intent intent = new Intent(GroupSelectionActivity.this, TouchDrawActivity.class);
+        Intent intent = new Intent(GroupSelectionActivity.this, MapActivity.class);
         startActivity(intent);
     }
 
