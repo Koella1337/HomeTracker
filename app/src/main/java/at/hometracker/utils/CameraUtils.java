@@ -43,7 +43,7 @@ public class CameraUtils {
         sourceActivity.startActivityForResult(intent, Constants.REQUESTCODE_IMAGE_CAPTURE);
     }
 
-    public static InputStream getPictureAsInputStream(Activity sourceActivity){
+    public static InputStream getPictureAsInputStream(Activity sourceActivity) {
         return new ByteArrayInputStream(getPictureAsByteArray(sourceActivity));
     }
 
@@ -55,7 +55,7 @@ public class CameraUtils {
             Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(sourceActivity.getContentResolver(), imageUri);
             System.out.println("imageBitmap: " + imageBitmap.getByteCount());
 
-            imageBitmap = rotateImageIfRequired(imageBitmap,Uri.fromFile(file));
+            imageBitmap = rotateImageIfRequired(imageBitmap, Uri.fromFile(file));
 
             System.out.println("imageBitmap rotated: " + imageBitmap.getByteCount());
             return getByteArrayForBitmap(imageBitmap);
@@ -67,10 +67,12 @@ public class CameraUtils {
 
     private static byte[] getByteArrayForBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if (bitmap.getByteCount() > Constants.FILE_MAX_SIZE){
-            bitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 0.2), (int) (bitmap.getHeight() * 0.2), false);
+
+        if (bitmap.getByteCount() > Constants.FILE_MAX_SIZE / 5) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        } else {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
         }
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
 

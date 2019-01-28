@@ -3,17 +3,15 @@ package at.hometracker.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.hardware.camera2.params.MeteringRectangle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,17 +20,10 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
@@ -40,32 +31,27 @@ import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.CameraUtils;
-import at.hometracker.utils.FileUtils;
 import at.hometracker.utils.Utils;
 
-import static at.hometracker.shared.Constants.PHP_ERROR_PREFIX;
-
-public class MapActivity extends AppCompatActivity {
+public class DrawerActivity extends AppCompatActivity {
 
     private static final int RASTER_SIZE = 50;
 
+
     private List<DrawableRect> drawableRectList = new ArrayList<>();
     private CustomImageView mapView;
+
     private Button newShelfButton;
     private Button okButton;
     private Button cancelbutton;
+
     private DrawableRect created;
 
-    private int group_id;
-    private int shelf_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
-        group_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_GROUP_ID, -1);
-        shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_SHELF_ID, -1);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -73,24 +59,21 @@ public class MapActivity extends AppCompatActivity {
         int dh = displaymetrics.heightPixels;
         Log.i("MapActivity", String.format("display size width: %s, height: %s", dw, dh));
 
-        newShelfButton = findViewById(R.id.button_map_create_shelf);
+        newShelfButton = findViewById(R.id.button_map_create_drawer);
         okButton = findViewById(R.id.button_map_create_ok);
         cancelbutton = findViewById(R.id.button_map_create_cancel);
         displayNewShelfButtonAndMakeOKandCancelInvisible();
 
-        new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP_WITHOUT_PICTURE, (task, result) -> {
+        new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP, (task, result) -> {
             if (result == null || result.isEmpty()) {
                 return;
             }
 
-            List<Shelf> shelfList = new ArrayList<>();
-
             String[] results = result.split(Constants.PHP_ROW_SPLITTER);
             for (String res : results) {
-                shelfList.add(new Shelf(res));
+                new Shelf(res);
             }
-            initDrawableRectListWithShelfs(shelfList);
-        }).execute(group_id);
+        }).execute(3213);
 
 
         ConstraintLayout constraintLayout = findViewById(R.id.touchDrawLayout);
@@ -103,22 +86,12 @@ public class MapActivity extends AppCompatActivity {
         mapView.invalidate();
     }
 
+
     public void initDrawableRectListWithShelfs(List<Shelf> shelfList) {
-        Log.i("MapActivity", "initDrawableRectListWithShelfs shelfList.size: " + shelfList.size());
         for (Shelf s : shelfList) {
-            if (s.sizeX != 0 && s.sizeY != 0) {
-                DrawableRect rect = new DrawableRect(s.posX, s.posY, s.posX + s.sizeX, s.posY + s.sizeY);
-                rect.setName(s.name);
-
-                if(s.shelf_id == shelf_id){
-                    Paint paint = rect.getPaint();
-                    paint.setColor(Color.RED);
-                }
-
-                drawableRectList.add(rect);
-            }
+            DrawableRect rect = new DrawableRect(s.posX, s.posY, s.posX + s.sizeX, s.posY + s.sizeY);
+            rect.setName(s.name);
         }
-        mapView.refresh();
     }
 
     private void setMarginsForMap() {
@@ -129,34 +102,31 @@ public class MapActivity extends AppCompatActivity {
         mapView.setLayoutParams(layoutParams);
     }
 
-    public void startShelfDraw(View view) {
+    public void startDrawerDraw(View view) {
         displayOKandCancelButtonAndMakeNewShelfButtonInvisible();
         this.mapView.startShelfDraw();
     }
 
-    public void finishShelfDraw(View view) {
+    public void finishDrawerDraw(View view) {
         displayNewShelfButtonAndMakeOKandCancelInvisible();
         AlertDialog alertDialog = Utils.buildAlertDialog(this, R.layout.dialog_create_shelf);
         Utils.setAlertDialogButtons(alertDialog,
-                getString(R.string.label_create_shelf), (dialog, id) -> createShelf(view, alertDialog),
-                getString(R.string.label_cancel), (dialog, id) -> cancelShelfDraw(view)
+                getString(R.string.label_create_shelf), (dialog, id) -> createDrawer(view, alertDialog),
+                getString(R.string.label_cancel), (dialog, id) -> cancelDrawerDraw(view)
         );
         alertDialog.setCancelable(false);
         alertDialog.show();
     }
 
 
-    public void createShelf(View view, AlertDialog shelfCreationDialog) {
+    public void createDrawer(View view, AlertDialog shelfCreationDialog) {
         Log.i("MapActivity", "createShelf");
 
         EditText textShelfName = shelfCreationDialog.findViewById(R.id.shelf_name_edittext);
         if (!Utils.validateEditTexts(this, textShelfName)) {
-            cancelShelfDraw(view);
+            cancelDrawerDraw(view);
             return;
         }
-
-        CameraUtils.requestPicture(this);
-
         created = this.mapView.finishShelfDraw();
         String shelfName = textShelfName.getText().toString();
         created.setName(shelfName);
@@ -169,21 +139,8 @@ public class MapActivity extends AppCompatActivity {
         if (requestCode == Constants.REQUESTCODE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             byte[] imageData = CameraUtils.getPictureAsByteArray(this);     //TODO: OMAX FIX THIS !!!
             Log.i("onActivityResult ok", "requestCode " + requestCode + " data length: " + imageData.length);
+
             created.setImageData(imageData);
-
-
-            new DatabaseTask(MapActivity.this, DatabaseMethod.INSERT_SHELF_WITH_POS, (task, result) -> {
-                if (result == null || result.startsWith(PHP_ERROR_PREFIX)) {
-                    if (result.equals(Constants.FILE_TOO_LARGE_ERROR))
-                        Toast.makeText(MapActivity.this, R.string.toast_file_too_large, Toast.LENGTH_LONG).show();
-                    else
-                        Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_failed, Toast.LENGTH_LONG).show();
-                } else
-                    Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_success, Toast.LENGTH_LONG).show();
-            }).execute(created.getName(), group_id, created.rect.left, created.rect.top, created.getSizeX(), created.getSizeY(), new ByteArrayInputStream(imageData));
-
-            // (name, group_id, posX, posY, sizeX, sizeY, pic)
-
             created = null;
         } else {
             Log.i("onActivityResult not ok", "requestCode " + requestCode);
@@ -192,7 +149,7 @@ public class MapActivity extends AppCompatActivity {
         mapView.refresh();
     }
 
-    public void cancelShelfDraw(View view) {
+    public void cancelDrawerDraw(View view) {
         this.newShelfButton.setVisibility(View.VISIBLE);
         this.okButton.setVisibility(View.INVISIBLE);
         this.cancelbutton.setVisibility(View.INVISIBLE);
@@ -215,18 +172,10 @@ public class MapActivity extends AppCompatActivity {
         private byte[] imageData;
         private Rect rect;
         private String name;
-        private Paint paint;
 
         public DrawableRect(int x, int y, int x2, int y2) {
             this.rect = createRectForPoints(x, y, x2, y2);
             this.name = name;
-
-            this.paint = new Paint();
-            this.paint.setStyle(Paint.Style.STROKE);
-            this.paint.setColor(Color.DKGRAY);
-            this.paint.setStrokeWidth(3);
-            this.paint.setTextSize(50);
-
         }
 
         public boolean intersects(int x, int y, int x2, int y2) {
@@ -255,22 +204,6 @@ public class MapActivity extends AppCompatActivity {
 
         public void setImageData(byte[] imageData) {
             this.imageData = imageData;
-        }
-
-        public int getSizeX() {
-            return this.rect.right - this.rect.left;
-        }
-
-        public int getSizeY() {
-            return this.rect.bottom - this.rect.top;
-        }
-
-        public Paint getPaint() {
-            return paint;
-        }
-
-        public void setPaint(Paint paint) {
-            this.paint = paint;
         }
     }
 
@@ -328,10 +261,13 @@ public class MapActivity extends AppCompatActivity {
             //Log.i("method called", "updateCanvas");
             canvas.drawColor(Color.LTGRAY);
 
-
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.DKGRAY);
+            paint.setStrokeWidth(3);
+            paint.setTextSize(50);
 
             for (DrawableRect d : drawableRectList) {
-                canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, d.paint);
+                canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, paint);
 
                 Paint textPaint = new Paint();
                 textPaint.setStyle(Paint.Style.FILL);
@@ -365,7 +301,14 @@ public class MapActivity extends AppCompatActivity {
                         int mx = round((int) event.getX());
                         int my = round((int) event.getY());
 
-                        if (isAlreadyCovered(downx,downy,mx,my)) {
+                        boolean isAlreadyCoverd = false;
+                        for (DrawableRect rect : drawableRectList) {
+                            if (rect.intersects(downx, downy, mx, my)) {
+                                isAlreadyCoverd = true;
+                                break;
+                            }
+                        }
+                        if (isAlreadyCoverd) {
                             paint.setColor(Color.RED);
                         } else {
                             paint.setColor(Color.GREEN);
@@ -376,13 +319,8 @@ public class MapActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.i("MapActivity", "TOUCH ACTION_UP..........");
-
                         upx = round((int) event.getX());
                         upy = round((int) event.getY());
-
-                        if (isAlreadyCovered(downx,downy,upx,upy)) {
-                          MapActivity.this.cancelShelfDraw(this);
-                        }
                         break;
                     case MotionEvent.ACTION_CANCEL:
                         break;
@@ -391,26 +329,7 @@ public class MapActivity extends AppCompatActivity {
                 }
             }
         }
-
-
-        private boolean isAlreadyCovered(int x, int y, int x2, int y2){
-            boolean isAlreadyCoverd = false;
-            for (DrawableRect rect : drawableRectList) {
-                if (rect.intersects(x, y, x2, y2)) {
-                    isAlreadyCoverd = true;
-                    break;
-                }
-            }
-            if (isAlreadyCoverd) {
-                paint.setColor(Color.RED);
-            } else {
-                paint.setColor(Color.GREEN);
-            }
-            return isAlreadyCoverd;
-        }
     }
-
-
 
     private int round(int n) {
         return (int) (RASTER_SIZE * (Math.round(n / RASTER_SIZE)));

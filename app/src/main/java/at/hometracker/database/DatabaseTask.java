@@ -73,11 +73,13 @@ public class DatabaseTask extends AsyncTask<Object, Void, String> {
                 }
             }
 
+            /*
             try {   //TODO: remove simulated waiting time
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            */
 
             return post.finish();
         } catch (IOException e) {
