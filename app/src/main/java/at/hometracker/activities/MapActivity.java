@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 import at.hometracker.R;
+import at.hometracker.database.DatabaseMethod;
+import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.CameraUtils;
@@ -67,6 +69,18 @@ public class MapActivity extends AppCompatActivity {
         okButton = findViewById(R.id.button_map_create_ok);
         cancelbutton = findViewById(R.id.button_map_create_cancel);
         displayNewShelfButtonAndMakeOKandCancelInvisible();
+
+        new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP, (task, result) -> {
+            if (result == null || result.isEmpty()) {
+                return;
+            }
+
+            String[] results = result.split(Constants.PHP_ROW_SPLITTER);
+            for (String res : results) {
+                new Shelf(res);
+            }
+        }).execute(3213);
+
 
         ConstraintLayout constraintLayout = findViewById(R.id.touchDrawLayout);
 
@@ -272,9 +286,9 @@ public class MapActivity extends AppCompatActivity {
 
                 canvas.drawText(d.getName(), d.rect.left + 50, (d.rect.top + d.rect.bottom) / 2, textPaint);
 
-                if(d.imageData != null){ // TODO remove, used for debugging
+                if (d.imageData != null) { // TODO remove, used for debugging
                     Bitmap bitmap = BitmapFactory.decodeByteArray(d.imageData, 0, d.imageData.length);
-                    canvas.drawBitmap(bitmap, d.rect.left,d.rect.top, null);
+                    canvas.drawBitmap(bitmap, d.rect.left, d.rect.top, null);
                 }
 
             }
