@@ -13,7 +13,7 @@
     <string name="label_keep_user_signed_in">Angemeldet bleiben</string>
     <string name="label_forgot_pw">Passwort vergessen?</string>
     <string name="label_register">Registrieren</string>
-    <string name="label_create_shelf">Neues Regal</string>
+    <string name="label_create_shelf">Regal erstellen</string>
     <string name="label_name">Name</string>
     <string name="label_loading">Lade</string>
     <string name="label_please_wait">Bitte warten</string>

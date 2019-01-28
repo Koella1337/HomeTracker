@@ -2,14 +2,14 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/touchDrawLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MapActivity"
-    android:id="@+id/touchDrawLayout"
-    >
+    android:layout_gravity="center"
+    tools:context=".activities.MapActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout_map_buttons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -34,6 +34,21 @@
             android:text="@string/label_create_shelf"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <Button
+            android:id="@+id/button_map_create_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:onClick="finishShelfDraw"
+            android:text="ok" />
+
+        <Button
+            android:id="@+id/button_map_create_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:onClick="cancelShelfDraw"
+            android:text="cancel" />
     </LinearLayout>
 
 
