@@ -38,10 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         setOnClickListeners();
 
         Intent intent = getIntent();
-        if (intent.hasExtra(Constants.INTENT_EXTRANAME_EMAIL) && intent.hasExtra(Constants.INTENT_EXTRANAME_PASSWORD)){
+        if (intent.hasExtra(Constants.INTENT_EXTRA_EMAIL) && intent.hasExtra(Constants.INTENT_EXTRA_PASSWORD)){
             //extras are found after user has logged out inside of the app
-            textfield_email.setText(intent.getStringExtra(Constants.INTENT_EXTRANAME_EMAIL));
-            textfield_password.setText(intent.getStringExtra(Constants.INTENT_EXTRANAME_PASSWORD));
+            textfield_email.setText(intent.getStringExtra(Constants.INTENT_EXTRA_EMAIL));
+            textfield_password.setText(intent.getStringExtra(Constants.INTENT_EXTRA_PASSWORD));
         } else {
             //no extras = app was freshly started --> check for preferences
             SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES_FILE_NAME, MODE_PRIVATE);
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                Utils.setLoginPreferences(getApplicationContext(), user.e_mail, providedPw);
 
             Intent groupSelectionIntent = new Intent(this, GroupSelectionActivity.class);
-            groupSelectionIntent.putExtra(Constants.INTENT_EXTRANAME_USER_ID, user.user_id);
+            groupSelectionIntent.putExtra(Constants.INTENT_EXTRA_USER_ID, user.user_id);
             startActivity(groupSelectionIntent);
             finish();   //finish this activity so user can't return here
         }

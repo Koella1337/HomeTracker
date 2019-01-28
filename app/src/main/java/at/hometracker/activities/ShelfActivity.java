@@ -8,8 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
@@ -29,7 +27,7 @@ public class ShelfActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_shelf);
         setSupportActionBar(myToolbar);
 
-        shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_SHELF_ID, -1);
+        shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_SHELF_ID, -1);
         Log.v("misc", "Started ShelfActivity with shelf_id: \"" + shelf_id + "\"");
         if (shelf_id == -1) throw new RuntimeException("Invalid shelf_id on ShelfActivity creation!");
 

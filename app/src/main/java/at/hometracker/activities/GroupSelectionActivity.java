@@ -43,7 +43,7 @@ public class GroupSelectionActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.toolbar_groupselection);
         setSupportActionBar(myToolbar);
 
-        int user_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_USER_ID, -1);
+        int user_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_USER_ID, -1);
         Log.v("misc", "Started GroupSelectionActivity with user_id: \"" + user_id + "\"");
         if (user_id == -1) throw new RuntimeException("Invalid user_id on GroupSelectionActivity creation!");
 
@@ -147,8 +147,8 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
         Utils.setLoginPreferences(getApplicationContext(), null, null);
         Intent loginIntent = new Intent(this, LoginActivity.class);
-        loginIntent.putExtra(Constants.INTENT_EXTRANAME_EMAIL, email);
-        loginIntent.putExtra(Constants.INTENT_EXTRANAME_PASSWORD, password);
+        loginIntent.putExtra(Constants.INTENT_EXTRA_EMAIL, email);
+        loginIntent.putExtra(Constants.INTENT_EXTRA_PASSWORD, password);
 
         startActivity(loginIntent);
         finish();
@@ -156,7 +156,7 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
     public void openGroupActivity(int group_id){
         Intent groupIntent = new Intent(this, GroupActivity.class);
-        groupIntent.putExtra(Constants.INTENT_EXTRANAME_GROUP_ID, group_id);
+        groupIntent.putExtra(Constants.INTENT_EXTRA_GROUP_ID, group_id);
         startActivity(groupIntent);
     }
 
