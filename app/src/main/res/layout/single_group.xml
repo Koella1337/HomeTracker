@@ -30,6 +30,6 @@
         android:paddingRight="8dp"
         android:text="Group 1"
         android:textColor="@android:color/black"
-        android:textSize="36sp"
+        android:textSize="24sp"
         tools:ignore="HardcodedText" />
 </LinearLayout>

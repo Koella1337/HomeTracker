@@ -1,5 +1,6 @@
 package at.hometracker.database.datamodel;
 
+import android.util.Base64;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -26,18 +27,23 @@ public abstract class AbstractDatabaseObject {
             try {
                 Field field = getClass().getField(colName);
 
-                switch(field.getType().getSimpleName()){
-                    case "String":
-                        field.set(this, value);
-                        break;
-                    case "int":
-                        field.setInt(this, Integer.parseInt(value));
-                        break;
-                    default:
-                        Log.e("db", String.format("Illegal field type (%s) in %s", field.getType().getSimpleName(), this.getClass().getSimpleName()));
-                        break;
+                if (colName.equals("picture")) {
+                    field.set(this, Base64.decode(value, 0));
                 }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
+                else {
+                    switch(field.getType().getSimpleName()){
+                        case "String":
+                            field.set(this, value);
+                            break;
+                        case "int":
+                            field.setInt(this, Integer.parseInt(value));
+                            break;
+                        default:
+                            Log.e("db", String.format("Illegal field type (%s) in %s", field.getType().getSimpleName(), this.getClass().getSimpleName()));
+                            break;
+                    }
+                }
+            } catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
         }

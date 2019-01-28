@@ -3,6 +3,7 @@ package at.hometracker.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import at.hometracker.TouchDrawActivity;
 import java.util.List;
@@ -28,7 +31,9 @@ import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Group;
 import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.shared.Constants;
+import at.hometracker.utils.FileUtils;
 import at.hometracker.utils.Utils;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
@@ -50,7 +55,7 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
         this.user_id = user_id;
 
-        DatabaseTask fetchGroups = new DatabaseTask(this, DatabaseMethod.SELECT_GROUPS_FOR_USER, result -> {
+        DatabaseTask fetchGroups = new DatabaseTask(this, DatabaseMethod.SELECT_GROUPS_FOR_USER, (task, result) -> {
             if (result == null || result.isEmpty())
                 return;
             List<Group> groups = new ArrayList<>();
@@ -71,6 +76,7 @@ public class GroupSelectionActivity extends AppCompatActivity {
             group.setOnClickListener(view -> openGroupActivity(g.group_id));
 
             ((TextView) group.findViewById(R.id.single_group_text)).setText(g.name);
+            FileUtils.setImageViewWithByteArray( group.findViewById(R.id.single_group_img), g.picture);
             layout.addView(group);
         }
     }
@@ -80,15 +86,18 @@ public class GroupSelectionActivity extends AppCompatActivity {
         if (!Utils.validateEditTexts(this, textGroupName))
             return;
 
-        String groupName = textGroupName.getText().toString();
         try {
-            new DatabaseTask(this, DatabaseMethod.INSERT_GROUP, result -> {
+            String groupName = textGroupName.getText().toString();
+            InputStream defaultPicture = getAssets().open(Constants.DEFAULT_PROFILE_PICTURE_NAME);
+
+            new DatabaseTask(this, DatabaseMethod.INSERT_GROUP, (task, result) -> {
                 if (result == null || result.startsWith(Constants.PHP_ERROR_PREFIX)){
                     Toast.makeText(this, R.string.toast_groupcreation_failed, Toast.LENGTH_LONG).show();
                 }
                 else {
                     int group_id = Integer.parseInt(result);
-                    addGroupViews(new Group(group_id, groupName, null, null));
+
+                    addGroupViews(new Group(group_id, groupName, null, null, FileUtils.toByteArray(defaultPicture)));
                     Toast.makeText(this, getString(R.string.toast_groupcreation_success) + groupName, Toast.LENGTH_LONG).show();
                 }
             }).execute(user_id, groupName, getAssets().open(Constants.DEFAULT_PROFILE_PICTURE_NAME));

@@ -1,5 +1,7 @@
 package at.hometracker.database;
 
+import android.util.Base64;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.net.URL;
 
 import at.hometracker.shared.Constants;
 
+import static at.hometracker.shared.Constants.PHP_FILE_PREFIX;
 import static at.hometracker.shared.Constants.crlf;
 
 public class MultipartPost {
@@ -102,7 +105,7 @@ public class MultipartPost {
             }
 
             String ret = responseBuilder.toString();
-            if (ret != null && ret.endsWith(crlf))
+            if (ret.endsWith(crlf))
                 ret = ret.substring(0, ret.length() - crlf.length());   //delete last "crlf"
 
             responseStreamReader.close();

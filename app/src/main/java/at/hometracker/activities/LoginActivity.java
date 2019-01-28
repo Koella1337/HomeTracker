@@ -10,8 +10,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.journeyapps.barcodescanner.Util;
-
 import java.io.IOException;
 
 import at.hometracker.R;
@@ -53,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             if (email != null && password != null) {
                 textfield_email.setText(email);
                 textfield_password.setText(password);
-                new DatabaseTask(this, DatabaseMethod.SELECT_USER, result -> login(new User(result))).execute(email);
+                new DatabaseTask(this, DatabaseMethod.SELECT_USER, (task, result) -> login(new User(result))).execute(email);
             }
         }
     }
@@ -89,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.btn_login).setOnClickListener(view -> {
             String email = textfield_email.getText().toString();
             if (Utils.validateEmailEditTexts(this, textfield_email))
-                new DatabaseTask(this, DatabaseMethod.SELECT_USER, result -> login(new User(result))).execute(email);
+                new DatabaseTask(this, DatabaseMethod.SELECT_USER, (task, result) -> login(new User(result))).execute(email);
         });
     }
 
@@ -118,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
     private void register(String email, String username, String password) {
         SecurePassword secPw = PasswordUtils.generateSecurePassword(password);
         try {
-            new DatabaseTask(this, DatabaseMethod.INSERT_USER, result -> {
+            new DatabaseTask(this, DatabaseMethod.INSERT_USER, (task, result) -> {
                 if (result == null || result.startsWith(Constants.PHP_ERROR_PREFIX)){
                     Toast.makeText(this, R.string.toast_registration_failed, Toast.LENGTH_LONG).show();
                 }

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +34,7 @@ public class Utils {
             }
 
             String str = txt.getText().toString();
-            if (str == null || str.length() < 4 || !str.matches("[a-zA-Z_0-9@ \\-]*")) {
-
-
+            if (str.length() < 4 || str.length() > 64 || !str.matches("[a-zA-Z_0-9@ \\-]*")) {
                 Toast.makeText(originActivity, R.string.toast_edittext_invalid, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -48,7 +45,7 @@ public class Utils {
     public static boolean validateEmailEditTexts(AppCompatActivity originActivity, EditText... textfields) {
         for (EditText txt : textfields) {
             String str = txt.getText().toString();
-            if (str == null || str.length() < 4 || !Patterns.EMAIL_ADDRESS.matcher(str).matches()) {
+            if (str.length() < 4 || str.length() > 64 || !Patterns.EMAIL_ADDRESS.matcher(str).matches()) {
                 Toast.makeText(originActivity, R.string.toast_email_invalid, Toast.LENGTH_LONG).show();
                 return false;
             }

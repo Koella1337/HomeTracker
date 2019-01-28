@@ -8,17 +8,19 @@ public class User extends AbstractDatabaseObject {
     public String name;
     public String password;
     public String password_salt;
+    public byte[] picture;
 
     public User(String databaseResult) {
         super(databaseResult);
     }
 
-    public User(int user_id, String e_mail, String name, String password, String password_salt) {
+    public User(int user_id, String e_mail, String name, String password, String password_salt, byte[] picture) {
         this.user_id = user_id;
         this.e_mail = e_mail;
         this.name = name;
         this.password = password;
         this.password_salt = password_salt;
+        this.picture = picture;
     }
 
     @Override

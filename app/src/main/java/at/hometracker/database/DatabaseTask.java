@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 import at.hometracker.R;
 import at.hometracker.shared.Constants;
-import at.hometracker.utils.Consumer;
+import at.hometracker.utils.BiConsumer;
 import at.hometracker.utils.Utils;
 
 //AsyncTask<Params, Progress, Result>
@@ -19,9 +19,13 @@ public class DatabaseTask extends AsyncTask<Object, Void, String> {
     private final DatabaseMethod methodToExecute;
 
     private final AlertDialog progressDialog;
-    private final Consumer<String> onFinishAction;
+    private final BiConsumer<DatabaseTask, String> onFinishAction;
 
-    public DatabaseTask(AppCompatActivity executingActivity, DatabaseMethod methodToExecute, Consumer<String> onFinishAction) {
+    public DatabaseMethod getMethodToExecute() {
+        return methodToExecute;
+    }
+
+    public DatabaseTask(AppCompatActivity executingActivity, DatabaseMethod methodToExecute, BiConsumer<DatabaseTask, String> onFinishAction) {
         this.methodToExecute = methodToExecute;
         this.onFinishAction = onFinishAction;
 
@@ -74,7 +78,7 @@ public class DatabaseTask extends AsyncTask<Object, Void, String> {
     protected void onPostExecute(String result) {
         Log.i("db", methodToExecute.name() + " result = {\"" + result + "\"}");
         if (onFinishAction != null)
-            onFinishAction.accept(result);
+            onFinishAction.accept(this, result);
         progressDialog.dismiss();
     }
 }

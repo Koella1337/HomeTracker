@@ -32,7 +32,7 @@ public class DatabaseActivity extends AppCompatActivity {
     }
 
     public void readFromDatabase(View view) {
-        new DatabaseTask(this, DatabaseMethod.SELECT_ALL_USERS, result -> {
+        new DatabaseTask(this, DatabaseMethod.SELECT_ALL_USERS, (task, result) -> {
             StringBuilder textBuilder = new StringBuilder();
             for (String row : result.split(Constants.PHP_ROW_SPLITTER)){
                 User u = new User(row);
