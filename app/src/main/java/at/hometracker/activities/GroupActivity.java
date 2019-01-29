@@ -1,7 +1,6 @@
 package at.hometracker.activities;
 
 import android.content.Intent;
-import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,20 +11,16 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import at.hometracker.R;
-import at.hometracker.app.ShelfGridAdapter;
+import at.hometracker.shared.ShelfGridAdapter;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Group;
 import at.hometracker.database.datamodel.Shelf;
-import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.qrcode.ReaderActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.CameraUtils;
@@ -40,7 +35,7 @@ public class GroupActivity extends AppCompatActivity {
     private Group group;
 
     private ShelfGridAdapter shelfGridAdapter;
-    private List<Shelf> shelves = null;
+    private List<Shelf> shelves = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +66,10 @@ public class GroupActivity extends AppCompatActivity {
 
     private void clearAndFetchShelves() {
         GridView grid = findViewById(R.id.shelf_grid);
+        grid.setOnItemClickListener((parent, view, position, id) -> {
+            Toast.makeText(GroupActivity.this, "Opening shelf with ID: " + shelves.get(position).shelf_id, Toast.LENGTH_SHORT).show();
+            openShelfActivity(shelves.get(position).shelf_id);
+        });
         shelves = new ArrayList<>();
 
         new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP, (task, result) -> {
@@ -81,11 +80,6 @@ public class GroupActivity extends AppCompatActivity {
             }
             shelfGridAdapter = new ShelfGridAdapter(GroupActivity.this, shelves);
             grid.setAdapter(shelfGridAdapter);
-
-            grid.setOnItemClickListener((parent, view, position, id) -> {
-                Toast.makeText(GroupActivity.this, "Opening shelf with ID: " + shelves.get(position).shelf_id, Toast.LENGTH_SHORT).show();
-                openShelfActivity(shelves.get(position).shelf_id);
-            });
             shelfGridAdapter.notifyDataSetChanged();
         }).execute(group_id);
     }

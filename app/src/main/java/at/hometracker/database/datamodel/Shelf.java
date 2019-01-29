@@ -8,6 +8,10 @@ public class Shelf extends AbstractDatabaseObject {
     public int posX, posY, sizeX, sizeY;
     public byte[] picture;
 
+    public Shelf() {
+        //empty constructor
+    }
+
     public Shelf(int shelf_id, String name, int group_id, int posX, int posY, int sizeX, int sizeY, byte[] picture) {
         this.shelf_id = shelf_id;
         this.name = name;
@@ -19,8 +23,8 @@ public class Shelf extends AbstractDatabaseObject {
         this.picture = picture;
     }
 
-    public Shelf(String databaseResult){
-        super(databaseResult);
+    public Shelf(String databaseRow){
+        super(databaseRow);
     }
 
     @Override

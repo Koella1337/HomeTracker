@@ -8,8 +8,12 @@ public class Group extends AbstractDatabaseObject {
     public String password_salt;
     public byte[] picture;
 
-    public Group(String databaseResult) {
-        super(databaseResult);
+    public Group() {
+        //empty constructor
+    }
+
+    public Group(String databaseRow) {
+        super(databaseRow);
     }
 
     public Group(int group_id, String name, String password, String password_salt, byte[] picture) {

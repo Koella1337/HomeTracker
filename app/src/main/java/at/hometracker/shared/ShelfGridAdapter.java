@@ -1,4 +1,4 @@
-package at.hometracker.app;
+package at.hometracker.shared;
 
 import android.content.Context;
 import android.content.Intent;
@@ -40,7 +40,6 @@ public class ShelfGridAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -72,7 +71,6 @@ public class ShelfGridAdapter extends BaseAdapter {
 
         return thumbnailView;
     }
-
 
     @Override
     public void notifyDataSetChanged() {

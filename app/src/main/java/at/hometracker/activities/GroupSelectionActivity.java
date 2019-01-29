@@ -25,6 +25,7 @@ import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Group;
+import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.FileUtils;
@@ -183,8 +184,8 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
     public void openTableActivity(View view) {
         Intent intent = new Intent(GroupSelectionActivity.this, TableActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, 0);
-        intent.putExtra(Constants.INTENT_EXTRA_GROUP_ID, 0);
+        intent.putExtra(Constants.INTENT_EXTRA_SHELF, new Shelf(61, "test", 12, 0, 0, 0, 0, null));
+        intent.putExtra(Constants.INTENT_EXTRA_GROUP, new Group(12, "omas", null, null, null));
         startActivity(intent);
     }
 

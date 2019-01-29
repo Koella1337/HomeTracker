@@ -16,6 +16,7 @@ import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.User;
+import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.PasswordUtils;
 import at.hometracker.utils.SecurePassword;
@@ -86,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_login).setOnClickListener(view -> {
             String email = textfield_email.getText().toString();
+
             if (Utils.validateEmailEditTexts(this, textfield_email))
                 new DatabaseTask(this, DatabaseMethod.SELECT_USER, (task, result) -> login(new User(result))).execute(email);
         });

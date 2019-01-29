@@ -10,8 +10,12 @@ public class User extends AbstractDatabaseObject {
     public String password_salt;
     public byte[] picture;
 
-    public User(String databaseResult) {
-        super(databaseResult);
+    public User() {
+        //empty constructor
+    }
+
+    public User(String databaseRow) {
+        super(databaseRow);
     }
 
     public User(int user_id, String e_mail, String name, String password, String password_salt, byte[] picture) {

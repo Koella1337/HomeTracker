@@ -8,13 +8,14 @@
 
     <TextView
         android:id="@+id/row_itemname_txt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="200"
+        android:gravity="center_vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="item name" />
+        android:text="item name"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:id="@+id/row_layout_amount"
@@ -29,6 +30,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:ems="10"
             android:inputType="number"
             android:textSize="18sp" />
@@ -66,4 +70,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
 </TableRow>
