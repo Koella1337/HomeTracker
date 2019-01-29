@@ -26,8 +26,12 @@ import java.util.List;
 import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
+import at.hometracker.database.datamodel.Drawer;
 import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.shared.Constants;
+import at.hometracker.shared.ShelfGridAdapter;
+
+import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
 public class CreateDrawerActivity extends AppCompatActivity {
 
@@ -43,7 +47,6 @@ public class CreateDrawerActivity extends AppCompatActivity {
     private Button cancelbutton;
     private DrawableRect created;
 
-    private int group_id;
     private int shelf_id;
 
     private int mapWidth;
@@ -56,7 +59,7 @@ public class CreateDrawerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
 
-        group_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_GROUP_ID, -1);
+
         shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_SHELF_ID, -1);
 
         backgroundImage = getIntent().getByteArrayExtra(Constants.INTENT_EXTRA_IMAGE);
@@ -86,20 +89,19 @@ public class CreateDrawerActivity extends AppCompatActivity {
         mapHeight = dh - buttonBarHeight;
 
 
-        new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP_WITHOUT_PICTURE, (task, result) -> {
+        new DatabaseTask(this, DatabaseMethod.SELECT_DRAWERS_FOR_SHELF, (task, result) -> {
             if (result == null || result.isEmpty()) {
                 return;
             }
 
-            List<Shelf> shelfList = new ArrayList<>();
+            List<Drawer> drawerList = new ArrayList<>();
 
             String[] results = result.split(Constants.PHP_ROW_SPLITTER);
             for (String res : results) {
-                shelfList.add(new Shelf(res));
+                drawerList.add(new Drawer(res));
             }
-            initDrawableRectListWithShelfs(shelfList, mapWidth, mapHeight);
-        });
-        //.execute(group_id);
+            initDrawableRectListWithShelfs(drawerList, mapWidth, mapHeight);
+        }).execute(shelf_id);
 
 
         mapView = new DrawerImageView(this, backgroundImage, mapWidth, mapHeight);
@@ -108,19 +110,13 @@ public class CreateDrawerActivity extends AppCompatActivity {
         mapView.invalidate();
     }
 
-    public void initDrawableRectListWithShelfs(List<Shelf> shelfList, int mapWidth, int mapHeight) {
-        Log.i("MapActivity", "initDrawableRectListWithShelfs shelfList.size: " + shelfList.size());
-        for (Shelf s : shelfList) {
+    public void initDrawableRectListWithShelfs(List<Drawer> drawerList, int mapWidth, int mapHeight) {
+        Log.i("MapActivity", "initDrawableRectListWithShelfs shelfList.size: " + drawerList.size());
+        for (Drawer s : drawerList) {
             if (s.sizeX != 0 && s.sizeY != 0) {
-
                 Rect convertedRect = convertRelativeRectToDrawableRect(new Rect(s.posX, s.posY, s.posX + s.sizeX, s.posY + s.sizeY));
                 DrawableRect rect = new DrawableRect(convertedRect.left, convertedRect.top, convertedRect.right, convertedRect.bottom);
-                rect.setName(s.name);
-
-                if (s.shelf_id == shelf_id) {
-                    Paint paint = rect.getPaint();
-                    paint.setColor(Color.RED);
-                }
+                rect.setName("");
                 drawableRectList.add(rect);
             }
         }
@@ -149,6 +145,16 @@ public class CreateDrawerActivity extends AppCompatActivity {
         return after;
     }
 
+    public void saveDrawerCreation(View view) {
+        for (DrawableRect drawableRect : drawableRectList) {
+            new DatabaseTask(this, DatabaseMethod.INSERT_DRAWER, (task, result) -> {
+                Log.i("DatabaseTask", "inserted drawer");
+            }).execute("testdescription", shelf_id, drawableRect.rect.left, drawableRect.rect.top, drawableRect.getSizeX(), drawableRect.getSizeY());
+        }
+        finish();
+    }
+
+
     public void startDrawerDraw(View view) {
         displayOKandCancelButtonAndMakeNewDrawerButtonInvisible();
         this.mapView.startShelfDraw();
@@ -156,7 +162,6 @@ public class CreateDrawerActivity extends AppCompatActivity {
 
     public void finishDrawerDraw(View view) {
         displayNewDrawerButtonAndMakeOKandCancelInvisible();
-
         created = this.mapView.finishDrawerDraw();
         mapView.refresh();
     }

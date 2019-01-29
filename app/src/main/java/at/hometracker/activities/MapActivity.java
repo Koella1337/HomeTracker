@@ -201,14 +201,9 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUESTCODE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            byte[] imageData = CameraUtils.getPictureAsByteArray(this);     //TODO: OMAX FIX THIS !!!
+            byte[] imageData = CameraUtils.getPictureAsByteArray(this);
             Log.i("onActivityResult ok", "requestCode " + requestCode + " data length: " + imageData.length);
             created.setImageData(imageData);
-
-            Intent createDrawerIntent = new Intent(this, CreateDrawerActivity.class);
-            createDrawerIntent.putExtra(Constants.INTENT_EXTRA_IMAGE, imageData);
-            startActivity(createDrawerIntent);
-
 
             Rect convertedShelfRect = convertDrawableRectToRelativeRect(created.rect);
 
@@ -218,8 +213,15 @@ public class MapActivity extends AppCompatActivity {
                         Toast.makeText(MapActivity.this, R.string.toast_file_too_large, Toast.LENGTH_LONG).show();
                     else
                         Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_failed, Toast.LENGTH_LONG).show();
-                } else
+                } else {
+
+                    Intent createDrawerIntent = new Intent(this, CreateDrawerActivity.class);
+                    createDrawerIntent.putExtra(Constants.INTENT_EXTRA_IMAGE, imageData);
+                    int createdShelfId = Integer.parseInt(result);
+                    createDrawerIntent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, createdShelfId);
+                    startActivity(createDrawerIntent);
                     Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_success, Toast.LENGTH_LONG).show();
+                }
             }).execute(created.getName(), group_id, convertedShelfRect.left, convertedShelfRect.top, convertedShelfRect.right - convertedShelfRect.left, convertedShelfRect.bottom - convertedShelfRect.top, new ByteArrayInputStream(imageData));
 
             // (name, group_id, posX, posY, sizeX, sizeY, pic)
