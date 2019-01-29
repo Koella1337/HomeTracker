@@ -196,7 +196,6 @@ public class CreateDrawerActivity extends AppCompatActivity {
             this.paint.setColor(Color.argb(150, 150, 150, 150));
             this.paint.setStrokeWidth(3);
             this.paint.setTextSize(50);
-
         }
 
         public boolean intersects(int x, int y, int x2, int y2) {
