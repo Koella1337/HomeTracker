@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_generate_qr"
+        android:id="@+id/action_new_item"
         app:showAsAction="never"
-        android:title="@string/label_generate_qr">
+        android:title="@string/label_new_item">
     </item>
 
     <item
-        android:id="@+id/action_logout"
+        android:id="@+id/action_generate_qr"
         app:showAsAction="never"
-        android:title="@string/label_logout">
+        android:title="@string/label_generate_qr">
     </item>
 
 </menu>

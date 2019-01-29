@@ -67,7 +67,6 @@ public class GroupActivity extends AppCompatActivity {
     private void clearAndFetchShelves() {
         GridView grid = findViewById(R.id.shelf_grid);
         grid.setOnItemClickListener((parent, view, position, id) -> {
-            Toast.makeText(GroupActivity.this, "Opening shelf with ID: " + shelves.get(position).shelf_id, Toast.LENGTH_SHORT).show();
             openShelfActivity(shelves.get(position).shelf_id);
         });
         shelves = new ArrayList<>();

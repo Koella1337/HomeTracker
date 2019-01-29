@@ -18,6 +18,10 @@
 
     <!-- PROFILE -->
     <item
+        android:id="@+id/action_create_shelf"
+        android:title="@string/label_create_shelf"
+        app:showAsAction="never"></item>
+    <item
         android:id="@+id/action_profile"
         app:showAsAction="never"
         android:title="@string/label_profile">
@@ -31,9 +35,4 @@
     </item>
 
     <!-- SETTINGS -->
-    <item
-        android:id="@+id/action_create_shelf"
-        app:showAsAction="never"
-        android:title="@string/label_create_shelf">
-    </item>
 </menu>

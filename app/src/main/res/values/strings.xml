@@ -39,4 +39,8 @@
     <string name="label_item">Item</string>
     <string name="label_amount">Amount</string>
     <string name="label_no_value">~ no value ~</string>
+    <string name="label_new_item">New item</string>
+    <string name="label_create_item">Create item</string>
+    <string name="toast_invalid_drawer_selection">Please select exactly one drawer on the image!</string>
+    <string name="toast_itemcreation_failed">Item creation failed!</string>
 </resources>

@@ -12,7 +12,7 @@
     <!-- Table colors -->
     <color name="table_color_white">#FFFFFFFF</color>
     <color name="table_color_gray">#FFD1D1D1</color>
-    <color name="table_color_dark_gray">#FFA2A2A2</color>
+    <color name="table_color_dark_gray">#FFB1B1B1</color>
 
     <!-- light blue-->
     <color name="md_light_blue_50">#E1F5FE</color>

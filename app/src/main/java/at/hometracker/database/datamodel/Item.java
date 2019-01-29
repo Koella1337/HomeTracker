@@ -58,7 +58,6 @@ public class Item extends AbstractDatabaseObject {
                 ", amount=" + amount +
                 ", drawerhasitem_id=" + drawerhasitem_id +
                 ", assignedKeywords=" + Arrays.toString(assignedKeywords.keySet().toArray()) +
-                ", keywordValues=" + Arrays.toString(assignedKeywords.values().toArray()) +
                 '}';
     }
 }

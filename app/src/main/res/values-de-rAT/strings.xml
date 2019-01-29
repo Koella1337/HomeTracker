@@ -35,4 +35,8 @@
     <string name="label_item">Artikel</string>
     <string name="label_amount">Menge</string>
     <string name="label_no_value">~ kein Wert ~</string>
+    <string name="label_new_item">Neuer Artikel</string>
+    <string name="label_create_item">Artikel erstellen</string>
+    <string name="toast_invalid_drawer_selection">Bitte nur exakt eine Lade am Bild selektieren!</string>
+    <string name="toast_itemcreation_failed">Artikel-Erstellung fehlgeschlagen!</string>
 </resources>
