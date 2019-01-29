@@ -67,7 +67,7 @@ public class GroupActivity extends AppCompatActivity {
     private void clearAndFetchShelves() {
         GridView grid = findViewById(R.id.shelf_grid);
         grid.setOnItemClickListener((parent, view, position, id) -> {
-            openShelfActivity(shelves.get(position).shelf_id);
+            openShelfActivity(shelves.get(position));
         });
         shelves = new ArrayList<>();
 
@@ -83,9 +83,9 @@ public class GroupActivity extends AppCompatActivity {
         }).execute(group_id);
     }
 
-    private void openShelfActivity(int shelf_id) {
-        Intent shelfIntent = new Intent(this, ShelfActivity.class);
-        shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, shelf_id);
+    private void openShelfActivity(Shelf shelf) {
+        Intent shelfIntent = new Intent(this, TableActivity.class);
+        shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF, shelf);
         shelfIntent.putExtra(Constants.INTENT_EXTRA_GROUP, group);
         startActivity(shelfIntent);
     }

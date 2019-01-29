@@ -45,7 +45,6 @@ import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
 public class TableActivity extends AppCompatActivity {
 
-    private Group group;
     private Shelf shelf;
 
     private TableLayout tableLayout;
@@ -64,9 +63,8 @@ public class TableActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         myToolbar.setTitle("TableActivity");
 
-        group = (Group) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_GROUP);
         shelf = (Shelf) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_SHELF);
-        if (shelf == null || group == null) throw new RuntimeException("Invalid id on TableActivity creation!");
+        if (shelf == null) throw new RuntimeException("Invalid id on TableActivity creation!");
 
         this.tableLayout = findViewById(R.id.table_shelf);
     }
@@ -122,7 +120,7 @@ public class TableActivity extends AppCompatActivity {
                             Toast.makeText(this, R.string.toast_itemcreation_failed, Toast.LENGTH_SHORT).show();
                         else
                             clearAndFetchFromDatabase();
-                    }).execute(name, amount, group.group_id, selectedDrawerID);
+                    }).execute(name, amount, shelf.group_id, selectedDrawerID);
                 },
                 getString(R.string.label_cancel), (view, id) -> {
                     dialog.dismiss();
