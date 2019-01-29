@@ -2,6 +2,7 @@ package at.hometracker.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,9 @@ public class TableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
+        Toolbar myToolbar = findViewById(R.id.toolbar_table);
+        setSupportActionBar(myToolbar);
+        myToolbar.setTitle("KQDPOWKOPQWKDP");
 
         shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_SHELF_ID, -1);
         group_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_GROUP_ID, -1);

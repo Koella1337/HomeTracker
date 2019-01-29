@@ -13,12 +13,16 @@ import android.widget.ImageView;
 import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
+import at.hometracker.database.datamodel.Group;
 import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.qrcode.GeneratorActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.FileUtils;
 
 public class ShelfActivity extends AppCompatActivity {
+
+    private Group group;
+    private Shelf shelf;
 
     private int shelf_id;
 
@@ -33,9 +37,16 @@ public class ShelfActivity extends AppCompatActivity {
         Log.v("misc", "Started ShelfActivity with shelf_id: \"" + shelf_id + "\"");
         if (shelf_id == -1) throw new RuntimeException("Invalid shelf_id on ShelfActivity creation!");
 
+        this.group = (Group) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_GROUP);
+
         ImageView imageView = findViewById(R.id.shelf_img);
         new DatabaseTask(this, DatabaseMethod.SELECT_SHELF, (task, result) -> {
-            Shelf shelf = new Shelf(result.split(Constants.PHP_ROW_SPLITTER)[0]);
+            if (result == null || result.isEmpty())
+                return;
+            Shelf shelf = new Shelf(result);
+            this.shelf = shelf;
+            myToolbar.setTitle(group.name + " > " + shelf.name);
+
             Log.v("misc", "Entered shelf: " + shelf);
             FileUtils.setImageViewWithByteArray(imageView, shelf.picture);
         }).execute(shelf_id);

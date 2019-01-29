@@ -23,6 +23,7 @@ import at.hometracker.R;
 import at.hometracker.app.ShelfGridAdapter;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
+import at.hometracker.database.datamodel.Group;
 import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.qrcode.ReaderActivity;
@@ -36,6 +37,7 @@ import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 public class GroupActivity extends AppCompatActivity {
 
     private int group_id;
+    private Group group;
 
     private ShelfGridAdapter shelfGridAdapter;
     private List<Shelf> shelves = null;
@@ -51,6 +53,14 @@ public class GroupActivity extends AppCompatActivity {
         Log.v("misc", "Started GroupActivity with group_id: \"" + group_id + "\"");
         if (group_id == -1)
             throw new RuntimeException("Invalid group_id on GroupActivity creation!");
+
+        new DatabaseTask(this, DatabaseMethod.SELECT_GROUP_WITHOUT_PICTURE, (task, result) -> {
+            if (result == null || result.isEmpty())
+                return;
+            Group group = new Group(result);
+            this.group = group;
+            myToolbar.setTitle(group.name);
+        }).execute(group_id);
     }
 
     @Override
@@ -83,6 +93,7 @@ public class GroupActivity extends AppCompatActivity {
     private void openShelfActivity(int shelf_id) {
         Intent shelfIntent = new Intent(this, ShelfActivity.class);
         shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, shelf_id);
+        shelfIntent.putExtra(Constants.INTENT_EXTRA_GROUP, group);
         startActivity(shelfIntent);
     }
 
