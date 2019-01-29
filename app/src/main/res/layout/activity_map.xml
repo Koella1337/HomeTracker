@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/linearLayout_map_buttons"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
@@ -28,7 +28,7 @@
         <Button
             android:id="@+id/button_map_create_shelf"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
             android:onClick="startShelfDraw"
             android:text="@string/label_create_shelf"
@@ -37,7 +37,7 @@
         <Button
             android:id="@+id/button_map_create_ok"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
             android:onClick="finishShelfDraw"
             android:text="ok" />
@@ -45,7 +45,7 @@
         <Button
             android:id="@+id/button_map_create_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
             android:onClick="cancelShelfDraw"
             android:text="cancel" />

@@ -3,6 +3,7 @@ package at.hometracker.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Rect;
@@ -17,6 +18,7 @@ import android.graphics.Paint;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -47,6 +49,7 @@ import static at.hometracker.shared.Constants.PHP_ERROR_PREFIX;
 
 public class MapActivity extends AppCompatActivity {
 
+    private static final double MAP_SIZE_CONSTANT = 1000.0;
     private static final int RASTER_SIZE = 50;
 
     private List<DrawableRect> drawableRectList = new ArrayList<>();
@@ -58,6 +61,9 @@ public class MapActivity extends AppCompatActivity {
 
     private int group_id;
     private int shelf_id;
+
+    private int mapWidth;
+    private int mapHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,20 @@ public class MapActivity extends AppCompatActivity {
         cancelbutton = findViewById(R.id.button_map_create_cancel);
         displayNewShelfButtonAndMakeOKandCancelInvisible();
 
+
+        ConstraintLayout constraintLayout = findViewById(R.id.touchDrawLayout);
+
+        Resources r = getResources();
+        int buttonBarHeight = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                80,
+                r.getDisplayMetrics()
+        );
+
+        mapWidth = dw;
+        mapHeight = dh - buttonBarHeight;
+
+
         new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP_WITHOUT_PICTURE, (task, result) -> {
             if (result == null || result.isEmpty()) {
                 return;
@@ -89,28 +109,27 @@ public class MapActivity extends AppCompatActivity {
             for (String res : results) {
                 shelfList.add(new Shelf(res));
             }
-            initDrawableRectListWithShelfs(shelfList);
+            initDrawableRectListWithShelfs(shelfList, mapWidth, mapHeight);
         }).execute(group_id);
 
 
-        ConstraintLayout constraintLayout = findViewById(R.id.touchDrawLayout);
-
-        mapView = new CustomImageView(this, dw - 100, dh - 400);
-
-        setMarginsForMap();
+        mapView = new CustomImageView(this, mapWidth, mapHeight);
         constraintLayout.addView(mapView);
         mapView.updateCanvas();
         mapView.invalidate();
     }
 
-    public void initDrawableRectListWithShelfs(List<Shelf> shelfList) {
+    public void initDrawableRectListWithShelfs(List<Shelf> shelfList, int mapWidth, int mapHeight) {
         Log.i("MapActivity", "initDrawableRectListWithShelfs shelfList.size: " + shelfList.size());
         for (Shelf s : shelfList) {
             if (s.sizeX != 0 && s.sizeY != 0) {
-                DrawableRect rect = new DrawableRect(s.posX, s.posY, s.posX + s.sizeX, s.posY + s.sizeY);
+
+                Rect convertedRect = convertRelativeRectToDrawableRect(new Rect(s.posX, s.posY, s.posX + s.sizeX, s.posY + s.sizeY));
+
+                DrawableRect rect = new DrawableRect(convertedRect.left, convertedRect.top, convertedRect.right, convertedRect.bottom);
                 rect.setName(s.name);
 
-                if(s.shelf_id == shelf_id){
+                if (s.shelf_id == shelf_id) {
                     Paint paint = rect.getPaint();
                     paint.setColor(Color.RED);
                 }
@@ -121,13 +140,28 @@ public class MapActivity extends AppCompatActivity {
         mapView.refresh();
     }
 
-    private void setMarginsForMap() {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        layoutParams.setMargins(50, 50, 50, 50);
-        mapView.setLayoutParams(layoutParams);
+    public Rect convertDrawableRectToRelativeRect(Rect drawableRect) {
+        int canvasWidth = this.mapView.canvas.getWidth();
+        int canvasHeight = this.mapView.canvas.getHeight();
+        int newX = (int) ((drawableRect.left / (double) canvasWidth) * MAP_SIZE_CONSTANT);
+        int newX2 = (int) ((drawableRect.right / (double) canvasWidth) * MAP_SIZE_CONSTANT);
+        int newY = (int) ((drawableRect.top / (double) canvasHeight) * MAP_SIZE_CONSTANT);
+        int newY2 = (int) ((drawableRect.bottom / (double) canvasHeight) * MAP_SIZE_CONSTANT);
+        Rect after = new Rect(newX, newY, newX2, newY2);
+        return after;
     }
+
+    public Rect convertRelativeRectToDrawableRect(Rect drawableRect) {
+        int canvasWidth = this.mapView.canvas.getWidth();
+        int canvasHeight = this.mapView.canvas.getHeight();
+        int newX = (int) ((drawableRect.left / MAP_SIZE_CONSTANT) * canvasWidth);
+        int newX2 = (int) ((drawableRect.right / MAP_SIZE_CONSTANT) * canvasWidth);
+        int newY = (int) ((drawableRect.top / MAP_SIZE_CONSTANT) * canvasHeight);
+        int newY2 = (int) ((drawableRect.bottom / MAP_SIZE_CONSTANT) * canvasHeight);
+        Rect after = new Rect(newX, newY, newX2, newY2);
+        return after;
+    }
+
 
     public void startShelfDraw(View view) {
         displayOKandCancelButtonAndMakeNewShelfButtonInvisible();
@@ -172,6 +206,8 @@ public class MapActivity extends AppCompatActivity {
             created.setImageData(imageData);
 
 
+            Rect convertedShelfRect = convertDrawableRectToRelativeRect(created.rect);
+
             new DatabaseTask(MapActivity.this, DatabaseMethod.INSERT_SHELF_WITH_POS, (task, result) -> {
                 if (result == null || result.startsWith(PHP_ERROR_PREFIX)) {
                     if (result.equals(Constants.FILE_TOO_LARGE_ERROR))
@@ -180,7 +216,7 @@ public class MapActivity extends AppCompatActivity {
                         Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_failed, Toast.LENGTH_LONG).show();
                 } else
                     Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_success, Toast.LENGTH_LONG).show();
-            }).execute(created.getName(), group_id, created.rect.left, created.rect.top, created.getSizeX(), created.getSizeY(), new ByteArrayInputStream(imageData));
+            }).execute(created.getName(), group_id, convertedShelfRect.left, convertedShelfRect.top, convertedShelfRect.right - convertedShelfRect.left, convertedShelfRect.bottom - convertedShelfRect.top, new ByteArrayInputStream(imageData));
 
             // (name, group_id, posX, posY, sizeX, sizeY, pic)
 
@@ -329,7 +365,6 @@ public class MapActivity extends AppCompatActivity {
             canvas.drawColor(Color.LTGRAY);
 
 
-
             for (DrawableRect d : drawableRectList) {
                 canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, d.paint);
 
@@ -365,7 +400,7 @@ public class MapActivity extends AppCompatActivity {
                         int mx = round((int) event.getX());
                         int my = round((int) event.getY());
 
-                        if (isAlreadyCovered(downx,downy,mx,my)) {
+                        if (isAlreadyCovered(downx, downy, mx, my)) {
                             paint.setColor(Color.RED);
                         } else {
                             paint.setColor(Color.GREEN);
@@ -380,8 +415,8 @@ public class MapActivity extends AppCompatActivity {
                         upx = round((int) event.getX());
                         upy = round((int) event.getY());
 
-                        if (isAlreadyCovered(downx,downy,upx,upy)) {
-                          MapActivity.this.cancelShelfDraw(this);
+                        if (isAlreadyCovered(downx, downy, upx, upy)) {
+                            MapActivity.this.cancelShelfDraw(this);
                         }
                         break;
                     case MotionEvent.ACTION_CANCEL:
@@ -393,7 +428,7 @@ public class MapActivity extends AppCompatActivity {
         }
 
 
-        private boolean isAlreadyCovered(int x, int y, int x2, int y2){
+        private boolean isAlreadyCovered(int x, int y, int x2, int y2) {
             boolean isAlreadyCoverd = false;
             for (DrawableRect rect : drawableRectList) {
                 if (rect.intersects(x, y, x2, y2)) {
@@ -409,7 +444,6 @@ public class MapActivity extends AppCompatActivity {
             return isAlreadyCoverd;
         }
     }
-
 
 
     private int round(int n) {
