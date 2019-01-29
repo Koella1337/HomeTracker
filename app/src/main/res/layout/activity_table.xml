@@ -16,50 +16,68 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/label_shelf" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_table">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_table"
+        app:layout_constraintVertical_bias="0.498">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="174dp"
-            android:layout_height="179dp"
-            android:layout_gravity="center_horizontal"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <TableLayout
-            android:id="@+id/table_shelf"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_table">
 
-            <TableRow
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="174dp"
+                android:layout_height="179dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/ic_testimg5" />
+
+            <TableLayout
+                android:id="@+id/table_shelf"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-            </TableRow>
+                <TableRow
+                    android:id="@+id/table_shelf_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/table_color_dark_gray">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text="Item"
+                        android:textSize="18sp" />
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        android:text="Amount"
+                        android:textSize="18sp" />
+                </TableRow>
+            </TableLayout>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        </LinearLayout>
+    </ScrollView>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
-    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

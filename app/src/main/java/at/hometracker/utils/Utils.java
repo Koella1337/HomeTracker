@@ -34,7 +34,7 @@ public class Utils {
             }
 
             String str = txt.getText().toString();
-            if (str.length() < 4 || str.length() > 64 || !str.matches("[a-zA-Z_0-9@ \\-]*")) {
+            if (str.length() < 4 || str.length() > 64 || !str.matches("[a-zA-Z0-9 -_.]*")) {
                 Toast.makeText(originActivity, R.string.toast_edittext_invalid, Toast.LENGTH_LONG).show();
                 return false;
             }

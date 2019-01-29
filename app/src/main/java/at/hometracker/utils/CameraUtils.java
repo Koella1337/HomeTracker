@@ -67,12 +67,19 @@ public class CameraUtils {
 
     private static byte[] getByteArrayForBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        if (bitmap.getByteCount() > Constants.FILE_MAX_SIZE / 5) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        } else {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+        int byteCount = bitmap.getByteCount();
+        if (byteCount > Constants.FILE_MAX_SIZE) {
+            bitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 0.3), (int) (bitmap.getHeight() * 0.3), false);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         }
+        else if (byteCount > Constants.FILE_MAX_SIZE / 2){
+            bitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 0.7), (int) (bitmap.getHeight() * 0.7), false);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        }
+        else {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        }
+
         return stream.toByteArray();
     }
 

@@ -9,6 +9,11 @@
     <!-- color for e.g. inputfield 'underline' -->
     <color name="colorAccent">#8BE8FF</color>
 
+    <!-- Table colors -->
+    <color name="table_color_white">#FFFFFFFF</color>
+    <color name="table_color_gray">#FFD1D1D1</color>
+    <color name="table_color_dark_gray">#FFA2A2A2</color>
+
     <!-- light blue-->
     <color name="md_light_blue_50">#E1F5FE</color>
     <color name="md_light_blue_100">#B3E5FC</color>

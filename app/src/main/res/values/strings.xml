@@ -25,7 +25,7 @@
     <string name="toast_registration_success">Registration successful!</string>
     <string name="toast_groupcreation_success">"Group created: "</string>
     <string name="toast_groupcreation_failed">Creation failed!</string>
-    <string name="toast_edittext_invalid">All fields must have at least 4 characters and can only contain letters, numbers, spaces, \"_\" and \"-\".</string>
+    <string name="toast_edittext_invalid">All fields must have at least 4 characters and can only contain letters, numbers, spaces, \".\", \"_\" and \"-\".</string>
     <string name="label_new_group">New group</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_ok" translatable="false">OK</string>
@@ -34,4 +34,5 @@
     <string name="toast_shelfcreation_failed">Shelf creation failed!</string>
     <string name="toast_shelfcreation_success">Shelf created!</string>
     <string name="toast_file_too_large">Image too large for upload!</string>
+    <string name="label_minus" translatable="false">-</string>
 </resources>

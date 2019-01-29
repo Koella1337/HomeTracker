@@ -64,8 +64,8 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        group_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_GROUP_ID, -1);
-        shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRANAME_SHELF_ID, -1);
+        group_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_GROUP_ID, -1);
+        shelf_id = getIntent().getIntExtra(Constants.INTENT_EXTRA_SHELF_ID, -1);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
