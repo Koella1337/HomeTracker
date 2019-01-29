@@ -33,7 +33,7 @@ import at.hometracker.shared.Constants;
 import at.hometracker.utils.CameraUtils;
 import at.hometracker.utils.Utils;
 
-public class DrawerActivity extends AppCompatActivity {
+public class DrawerActivity_DELETEME extends AppCompatActivity {
 
     private static final int RASTER_SIZE = 50;
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".activities.DrawerActivity">
+    tools:context=".activities.DrawerActivity_DELETEME">
 
     <LinearLayout
         android:id="@+id/linearLayout_drawer_buttons"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:onClick="startDrawerDraw"
-            android:text="@string/label_create_shelf"
+            android:text="@string/label_create_drawer"
             app:layout_constraintRight_toRightOf="parent" />
 
         <Button
