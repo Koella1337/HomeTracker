@@ -35,4 +35,5 @@
     <string name="toast_shelfcreation_success">Shelf created!</string>
     <string name="toast_file_too_large">Image too large for upload!</string>
     <string name="label_minus" translatable="false">-</string>
+    <string name="label_generate_qr">Generate QR</string>
 </resources>

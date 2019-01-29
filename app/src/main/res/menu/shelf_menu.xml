@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_generate_qr"
         app:showAsAction="never"
-        android:title="@string/label_settings">
+        android:title="@string/label_generate_qr">
     </item>
 
     <item

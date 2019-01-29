@@ -12,42 +12,37 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import at.hometracker.R;
+import at.hometracker.activities.GroupActivity;
+import at.hometracker.activities.ShelfActivity;
+import at.hometracker.shared.Constants;
 
 public class ReaderActivity extends AppCompatActivity {
-    private Button scan_btn;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
-        scan_btn = (Button) findViewById(R.id.scan_btn);
+
         final Activity activity = this;
-        scan_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentIntegrator integrator = new IntentIntegrator(activity);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                integrator.setPrompt("Scan");
-                integrator.setCameraId(0);
-                integrator.setBeepEnabled(true);
-                integrator.setBarcodeImageEnabled(true);
-                integrator.initiateScan();
-            }
-        });
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Scan");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(true);
+        integrator.setBarcodeImageEnabled(true);
+        integrator.initiateScan();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null){
-            if(result.getContents()==null){
-                Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
-            }
-            else {
-                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
-            }
-        }
-        else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        String qrCodeDecoded = result.getContents();
+        Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+        Intent shelfIntent = new Intent(this, ShelfActivity.class);
+
+        shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF_ID, Integer.parseInt("0"+qrCodeDecoded.replace("shelf_","")));
+        startActivity(shelfIntent);
+        finish();
     }
 }
