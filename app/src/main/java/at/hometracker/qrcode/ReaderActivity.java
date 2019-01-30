@@ -4,23 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import at.hometracker.R;
-import at.hometracker.activities.GroupActivity;
-import at.hometracker.activities.ShelfActivity;
 import at.hometracker.activities.TableActivity;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.shared.Constants;
-import at.hometracker.utils.FileUtils;
 
 public class ReaderActivity extends AppCompatActivity {
 

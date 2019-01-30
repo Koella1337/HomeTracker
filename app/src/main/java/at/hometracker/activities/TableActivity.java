@@ -44,6 +44,7 @@ import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Drawer;
+import at.hometracker.database.datamodel.Group;
 import at.hometracker.database.datamodel.Item;
 import at.hometracker.database.datamodel.Keyword;
 import at.hometracker.database.datamodel.Shelf;
@@ -62,6 +63,7 @@ public class TableActivity extends AppCompatActivity {
     private static double MAP_SIZE_CONSTANT_Y = 1000.0;
 
     private Shelf shelf;
+    private Group group;
     private TableLayout tableLayout;
 
     private List<Item> unfilteredItems = new ArrayList<>();
@@ -82,10 +84,11 @@ public class TableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_table);
         Toolbar myToolbar = findViewById(R.id.toolbar_table);
         setSupportActionBar(myToolbar);
-        myToolbar.setTitle("TableActivity");
 
         shelf = (Shelf) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_SHELF);
+        group = (Group) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_GROUP);
         if (shelf == null) throw new RuntimeException("Invalid id on TableActivity creation!");
+        myToolbar.setTitle(group.name + " > " + shelf.name);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -262,8 +265,6 @@ public class TableActivity extends AppCompatActivity {
 
             boolean isInSelectedDrawer = false;
             if (containsSearchString) {
-                Log.v("misc", "drawers size: " + selectedDrawers.size());
-
                 if (selectedDrawers.size() == 0) {
                     isInSelectedDrawer = true;  //no drawers selected --> no filtering
                 }

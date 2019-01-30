@@ -190,11 +190,9 @@ public class GroupSelectionActivity extends AppCompatActivity {
                 return;
             Shelf shelf = new Shelf(result);
             intent.putExtra(Constants.INTENT_EXTRA_SHELF, shelf);
-            intent.putExtra(Constants.INTENT_EXTRA_GROUP, shelf.group_id);
+            intent.putExtra(Constants.INTENT_EXTRA_GROUP, new Group(12, "omas", null, null, null));
             startActivity(intent);
         }).execute(61);
-
-
     }
 
 }
