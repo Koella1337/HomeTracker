@@ -40,4 +40,5 @@
     <string name="toast_invalid_drawer_selection">Bitte nur exakt eine Lade am Bild selektieren!</string>
     <string name="toast_itemcreation_failed">Artikel-Erstellung fehlgeschlagen!</string>
     <string name="label_create_drawer">Lade erstellen</string>
+    <string name="label_map">Karte</string>
 </resources>

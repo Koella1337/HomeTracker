@@ -44,4 +44,5 @@
     <string name="toast_invalid_drawer_selection">Please select exactly one drawer on the image!</string>
     <string name="toast_itemcreation_failed">Item creation failed!</string>
     <string name="label_create_drawer">Create drawer</string>
+    <string name="label_map">Map</string>
 </resources>
