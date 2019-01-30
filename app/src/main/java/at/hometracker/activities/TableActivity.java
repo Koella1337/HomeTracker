@@ -435,7 +435,7 @@ public class TableActivity extends AppCompatActivity {
 
     public List<Drawer> getSelectedDrawers() {
         List<Drawer> selectedDrawersFromView = new ArrayList<>();
-        for (DrawableDrawerRect d : drawerView.selectedDrawers) {
+        for(DrawableDrawerRect d : drawerView.selectedDrawers){
             selectedDrawersFromView.add(d.drawer);
         }
         return selectedDrawersFromView;
@@ -554,7 +554,7 @@ public class TableActivity extends AppCompatActivity {
 
             canvas = new Canvas(drawableBitmap);
             paint = new Paint();
-            paint.setColor(Color.GRAY);
+            paint.setColor(Color.argb(150, 150, 150, 150));
 
             this.setImageBitmap(drawableBitmap);
             this.setOnTouchListener(this);
@@ -604,12 +604,10 @@ public class TableActivity extends AppCompatActivity {
 
             for (TableActivity.DrawableDrawerRect d : drawableRectList) {
                 if (selectedDrawers.contains(d)) {
-                    d.paint.setColor(Color.RED);
+                    d.paint.setColor(Color.argb(150, 200, 50, 50));
                 } else {
-                    d.paint.setColor(Color.GRAY);
-
+                    d.paint.setColor(Color.argb(150, 150, 150, 150));
                 }
-
                 canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, d.paint);
             }
         }

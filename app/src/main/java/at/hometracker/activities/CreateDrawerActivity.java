@@ -31,8 +31,7 @@ import at.hometracker.shared.Constants;
 
 public class CreateDrawerActivity extends AppCompatActivity {
 
-    private static double MAP_SIZE_CONSTANT_X;
-    private static double MAP_SIZE_CONSTANT_Y;
+    private static double MAP_SIZE_CONSTANT = 1000.0;
 
     private static final int RASTER_SIZE = 50;
 
@@ -120,25 +119,25 @@ public class CreateDrawerActivity extends AppCompatActivity {
     }
 
     public Rect convertDrawableRectToRelativeRect(Rect drawableRect) {
-       // Log.i("convert drawable to relative first ",drawableRect);
+        Log.i("convert d to r before ",""+drawableRect);
         int canvasWidth = this.mapView.canvas.getWidth();
         int canvasHeight = this.mapView.canvas.getHeight();
-        int newX = (int) ((drawableRect.left / (double) canvasWidth) * MAP_SIZE_CONSTANT_X);
-        int newX2 = (int) ((drawableRect.right / (double) canvasWidth) * MAP_SIZE_CONSTANT_X);
-        int newY = (int) ((drawableRect.top / (double) canvasHeight) * MAP_SIZE_CONSTANT_Y);
-        int newY2 = (int) ((drawableRect.bottom / (double) canvasHeight) * MAP_SIZE_CONSTANT_Y);
+        int newX = (int) ((drawableRect.left / (double) canvasWidth) * MAP_SIZE_CONSTANT);
+        int newX2 = (int) ((drawableRect.right / (double) canvasWidth) * MAP_SIZE_CONSTANT);
+        int newY = (int) ((drawableRect.top / (double) canvasHeight) * MAP_SIZE_CONSTANT);
+        int newY2 = (int) ((drawableRect.bottom / (double) canvasHeight) * MAP_SIZE_CONSTANT);
         Rect after = new Rect(newX, newY, newX2, newY2);
-      //  Log.i("convert drawable to relative ",after);
+        Log.i("convert d to r after",""+after);
         return after;
     }
 
     public Rect convertRelativeRectToDrawableRect(Rect drawableRect) {
         int canvasWidth = this.mapView.canvas.getWidth();
         int canvasHeight = this.mapView.canvas.getHeight();
-        int newX = (int) ((drawableRect.left / MAP_SIZE_CONSTANT_X) * canvasWidth);
-        int newX2 = (int) ((drawableRect.right / MAP_SIZE_CONSTANT_X) * canvasWidth);
-        int newY = (int) ((drawableRect.top / MAP_SIZE_CONSTANT_Y) * canvasHeight);
-        int newY2 = (int) ((drawableRect.bottom / MAP_SIZE_CONSTANT_Y) * canvasHeight);
+        int newX = (int) ((drawableRect.left / MAP_SIZE_CONSTANT) * canvasWidth);
+        int newX2 = (int) ((drawableRect.right / MAP_SIZE_CONSTANT) * canvasWidth);
+        int newY = (int) ((drawableRect.top / MAP_SIZE_CONSTANT) * canvasHeight);
+        int newY2 = (int) ((drawableRect.bottom / MAP_SIZE_CONSTANT) * canvasHeight);
         Rect after = new Rect(newX, newY, newX2, newY2);
         return after;
     }
