@@ -121,7 +121,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void initDrawableRectListWithShelfs(List<Shelf> shelfList, int mapWidth, int mapHeight) {
-        Log.i("MapActivity", "initDrawableRectListWithShelfs shelfList.size: " + shelfList.size());
+        Log.i("MapActivity", "initDrawableRectListWithDrawers shelfList.size: " + shelfList.size());
         for (Shelf s : shelfList) {
             if (s.sizeX != 0 && s.sizeY != 0) {
 

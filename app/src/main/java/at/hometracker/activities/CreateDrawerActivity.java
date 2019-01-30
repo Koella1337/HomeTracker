@@ -27,11 +27,7 @@ import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Drawer;
-import at.hometracker.database.datamodel.Shelf;
 import at.hometracker.shared.Constants;
-import at.hometracker.shared.ShelfGridAdapter;
-
-import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
 public class CreateDrawerActivity extends AppCompatActivity {
 
@@ -100,7 +96,7 @@ public class CreateDrawerActivity extends AppCompatActivity {
             for (String res : results) {
                 drawerList.add(new Drawer(res));
             }
-            initDrawableRectListWithShelfs(drawerList, mapWidth, mapHeight);
+            initDrawableRectListWithDrawers(drawerList, mapWidth, mapHeight);
         }).execute(shelf_id);
 
 
@@ -110,8 +106,8 @@ public class CreateDrawerActivity extends AppCompatActivity {
         mapView.invalidate();
     }
 
-    public void initDrawableRectListWithShelfs(List<Drawer> drawerList, int mapWidth, int mapHeight) {
-        Log.i("MapActivity", "initDrawableRectListWithShelfs shelfList.size: " + drawerList.size());
+    public void initDrawableRectListWithDrawers(List<Drawer> drawerList, int mapWidth, int mapHeight) {
+        Log.i("MapActivity", "initDrawableRectListWithDrawers drawerList.size: " + drawerList.size());
         for (Drawer s : drawerList) {
             if (s.sizeX != 0 && s.sizeY != 0) {
                 Rect convertedRect = convertRelativeRectToDrawableRect(new Rect(s.posX, s.posY, s.posX + s.sizeX, s.posY + s.sizeY));
@@ -124,6 +120,7 @@ public class CreateDrawerActivity extends AppCompatActivity {
     }
 
     public Rect convertDrawableRectToRelativeRect(Rect drawableRect) {
+       // Log.i("convert drawable to relative first ",drawableRect);
         int canvasWidth = this.mapView.canvas.getWidth();
         int canvasHeight = this.mapView.canvas.getHeight();
         int newX = (int) ((drawableRect.left / (double) canvasWidth) * MAP_SIZE_CONSTANT_X);
@@ -131,6 +128,7 @@ public class CreateDrawerActivity extends AppCompatActivity {
         int newY = (int) ((drawableRect.top / (double) canvasHeight) * MAP_SIZE_CONSTANT_Y);
         int newY2 = (int) ((drawableRect.bottom / (double) canvasHeight) * MAP_SIZE_CONSTANT_Y);
         Rect after = new Rect(newX, newY, newX2, newY2);
+      //  Log.i("convert drawable to relative ",after);
         return after;
     }
 
@@ -147,9 +145,11 @@ public class CreateDrawerActivity extends AppCompatActivity {
 
     public void saveDrawerCreation(View view) {
         for (DrawableRect drawableRect : drawableRectList) {
+
+            Rect convertedDrawerRect = convertDrawableRectToRelativeRect(drawableRect.rect);
             new DatabaseTask(this, DatabaseMethod.INSERT_DRAWER, (task, result) -> {
                 Log.i("DatabaseTask", "inserted drawer");
-            }).execute("testdescription", shelf_id, drawableRect.rect.left, drawableRect.rect.top, drawableRect.getSizeX(), drawableRect.getSizeY());
+            }).execute("testdescription", shelf_id, convertedDrawerRect.left, convertedDrawerRect.top, convertedDrawerRect.right - convertedDrawerRect.left, convertedDrawerRect.bottom - convertedDrawerRect.top);
         }
         finish();
     }
