@@ -1,10 +1,19 @@
 package at.hometracker.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -12,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -26,8 +36,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
@@ -47,6 +59,9 @@ import static at.hometracker.shared.Constants.PHP_ROW_SPLITTER;
 
 public class TableActivity extends AppCompatActivity {
 
+    private static double MAP_SIZE_CONSTANT_X = 1000.0;
+    private static double MAP_SIZE_CONSTANT_Y = 1000.0;
+
     private Shelf shelf;
     private TableLayout tableLayout;
 
@@ -59,6 +74,9 @@ public class TableActivity extends AppCompatActivity {
     private String sortedAscendingBy = "";
     private String searchString = "";
 
+    private LinearLayout linearlayoutTableDrawer;
+    private CustomImageView drawerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +88,29 @@ public class TableActivity extends AppCompatActivity {
         shelf = (Shelf) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_SHELF);
         if (shelf == null) throw new RuntimeException("Invalid id on TableActivity creation!");
 
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int dw = (int) (displaymetrics.widthPixels);
+        int dh = displaymetrics.heightPixels;
+
+        drawerView = new CustomImageView(this, shelf.picture, (int) dw, (int) 700);
+        new DatabaseTask(this, DatabaseMethod.SELECT_DRAWERS_FOR_SHELF, (task, result) -> {
+            if (result == null || result.isEmpty()) {
+                return;
+            }
+
+            List<Drawer> drawerList = new ArrayList<>();
+
+            String[] results = result.split(Constants.PHP_ROW_SPLITTER);
+            for (String res : results) {
+                drawerList.add(new Drawer(res));
+            }
+            initDrawableRectListWithDrawers(drawerList);
+        }).execute(shelf.shelf_id);
+
         this.tableLayout = findViewById(R.id.table_shelf);
+        this.linearlayoutTableDrawer = findViewById(R.id.linearlayout_table_drawer);
+        this.linearlayoutTableDrawer.addView(drawerView);
     }
 
     @Override
@@ -91,7 +131,7 @@ public class TableActivity extends AppCompatActivity {
                 showAddItemDialog();
                 return true;
             case R.id.action_generate_qr:
-                String qrCodeString = "shelf_"+ shelf.shelf_id;
+                String qrCodeString = "shelf_" + shelf.shelf_id;
 
                 Intent qrGeneratorIntent = new Intent(this, GeneratorActivity.class);
                 qrGeneratorIntent.putExtra(Constants.INTENT_EXTRA_QR_STRING, qrCodeString);
@@ -130,6 +170,7 @@ public class TableActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.toast_invalid_drawer_selection, Toast.LENGTH_SHORT).show();
             return;
         }
+        int selectedDrawerID = getSelectedDrawers().get(0).drawer_id;
 
         AlertDialog dialog = Utils.buildAlertDialog(this, R.layout.dialog_create_item);
         Utils.setAlertDialogButtons(dialog,
@@ -148,7 +189,7 @@ public class TableActivity extends AppCompatActivity {
                             Toast.makeText(this, R.string.toast_itemcreation_failed, Toast.LENGTH_SHORT).show();
                         else
                             clearAndFetchFromDatabase();
-                    }).execute(name, amount, shelf.group_id, getPrimaryDrawer());
+                    }).execute(name, amount, shelf.group_id, selectedDrawerID);
                 },
                 getString(R.string.label_cancel), (view, id) -> {
                     dialog.dismiss();
@@ -172,7 +213,7 @@ public class TableActivity extends AppCompatActivity {
             }
             new DatabaseTask(this, DatabaseMethod.SELECT_KEYWORDS_FOR_SHELF, (kw_task, kw_result) -> {
                 keywords.clear();
-                for (String row : kw_result.split(PHP_ROW_SPLITTER)){
+                for (String row : kw_result.split(PHP_ROW_SPLITTER)) {
                     keywords.add(new Keyword(row));
                 }
                 assignKeywordsToUnfilteredItems();
@@ -185,7 +226,7 @@ public class TableActivity extends AppCompatActivity {
     private void assignKeywordsToUnfilteredItems() {
         for (Item item : unfilteredItems) {
             for (Keyword kw : keywords) {
-                if (item.drawerhasitem_id == kw.drawerhasitem_id){
+                if (item.drawerhasitem_id == kw.drawerhasitem_id) {
                     item.assignedKeywords.put(kw.name, kw);
                 }
             }
@@ -243,11 +284,10 @@ public class TableActivity extends AppCompatActivity {
             TableRow row = (TableRow) inflater.inflate(R.layout.single_tablerow, tableLayout, false).getRootView();
             LinearLayout amountLayout = row.findViewById(R.id.row_layout_amount);
 
-            if (i%2 == 0) { //alternating row background color
+            if (i % 2 == 0) { //alternating row background color
                 row.setBackgroundResource(R.color.table_color_white);
                 amountLayout.setBackgroundResource(R.color.table_color_white);
-            }
-            else {
+            } else {
                 row.setBackgroundResource(R.color.table_color_gray);
                 amountLayout.setBackgroundResource(R.color.table_color_gray);
             }
@@ -311,7 +351,9 @@ public class TableActivity extends AppCompatActivity {
         }
     }
 
-    /** Assumes keywords != null. */
+    /**
+     * Assumes keywords != null.
+     */
     private void addTableHeader() {
         TableRow header = new TableRow(this);
         header.setBackgroundResource(R.color.table_color_dark_gray);
@@ -396,20 +438,16 @@ public class TableActivity extends AppCompatActivity {
                         return 0;
                     else
                         return 1;   //null > non-null
-                }
-                else if (kw2 == null) {
+                } else if (kw2 == null) {
                     return -1;      //non-null < null
-                }
-                else if (kw1.value == null) {
+                } else if (kw1.value == null) {
                     if (kw2.value == null)
                         return 0;
                     else
                         return 1;   //null > non-null
-                }
-                else if (kw2.value == null) {
+                } else if (kw2.value == null) {
                     return -1;      //non-null < null
-                }
-                else {
+                } else {
                     int ascendingRetVal = kw1.value.toLowerCase().compareTo(kw2.value.toLowerCase());
                     return sortDescending ? ascendingRetVal * -1 : ascendingRetVal;
                 }
@@ -501,21 +539,15 @@ public class TableActivity extends AppCompatActivity {
             return amount;
         }
 
-        if (amount < MIN_ITEM_AMOUNT){
+        if (amount < MIN_ITEM_AMOUNT) {
             amount = MIN_ITEM_AMOUNT;
             amountEditText.setText(String.valueOf(amount));
-        }
-        else if (amount > MAX_ITEM_AMOUNT){
+        } else if (amount > MAX_ITEM_AMOUNT) {
             amount = MAX_ITEM_AMOUNT;
             amountEditText.setText(String.valueOf(amount));
         }
         return amount;
     }
-
-    private List<Drawer> getSelectedDrawers() {
-        return Arrays.asList(new Drawer[]{new Drawer(1, "test", 61, 0, 0, 0, 0)});
-    }
-
 
     private int getPrimaryDrawer() {
         //TODO: Omas !!
@@ -524,6 +556,183 @@ public class TableActivity extends AppCompatActivity {
 
     private void setPrimaryDrawer(int drawer_id) {
         //TODO: Omas !!
+
+    private List<Drawer> getSelectedDrawers() {
+        List<Drawer> selectedDrawersFromView = new ArrayList<>();
+        for(DrawableDrawerRect d : drawerView.selectedDrawers){
+            selectedDrawersFromView.add(d.drawer);
+        }
+        return selectedDrawersFromView;
+    }
+
+    private class DrawableDrawerRect {
+        private Drawer drawer;
+        private Rect rect;
+        private String name;
+        private Paint paint;
+
+        public DrawableDrawerRect(Drawer drawer, int x, int y, int x2, int y2) {
+            this.rect = createRectForPoints(x, y, x2, y2);
+            this.name = name;
+            this.drawer = drawer;
+            this.paint = new Paint();
+            this.paint.setStyle(Paint.Style.FILL_AND_STROKE);
+            this.paint.setColor(Color.argb(150, 150, 150, 150));
+            this.paint.setStrokeWidth(3);
+            this.paint.setTextSize(50);
+        }
+
+        public boolean contains(int x, int y) {
+            return rect.contains(x, y);
+        }
+
+        private Rect createRectForPoints(int x, int y, int x2, int y2) {
+            int topleftX = Math.min(x, x2);
+            int topleftY = Math.min(y, y2);
+            int bottomRightX = Math.max(x, x2);
+            int bottomRightY = Math.max(y, y2);
+            return new Rect(topleftX, topleftY, bottomRightX, bottomRightY);
+        }
+
+        public String getName() {
+            return name == null ? "" : name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getSizeX() {
+            return this.rect.right - this.rect.left;
+        }
+
+        public int getSizeY() {
+            return this.rect.bottom - this.rect.top;
+        }
+
+        public Paint getPaint() {
+            return paint;
+        }
+
+        public void setPaint(Paint paint) {
+            this.paint = paint;
+        }
+
+        @Override
+        public String toString() {
+            return "DrawableDrawerRect{" +
+                    "drawer=" + drawer +
+                    ", rect=" + rect +
+                    ", name='" + name + '\'' +
+                    ", paint=" + paint +
+                    '}';
+        }
+    }
+
+
+    public void initDrawableRectListWithDrawers(List<Drawer> drawerList) {
+        Log.i("TableActivity", "initDrawableRectListWithDrawers drawerList.size: " + drawerList.size());
+        for (Drawer d : drawerList) {
+            if (d.sizeX != 0 && d.sizeY != 0) {
+                Rect convertedRect = convertRelativeRectToDrawableRect(new Rect(d.posX, d.posY, d.posX + d.sizeX, d.posY + d.sizeY));
+                TableActivity.DrawableDrawerRect rect = new TableActivity.DrawableDrawerRect(d, convertedRect.left, convertedRect.top, convertedRect.right, convertedRect.bottom);
+                rect.setName("");
+                drawerView.drawableRectList.add(rect);
+            }
+        }
+        drawerView.refresh();
+    }
+
+    public Rect convertRelativeRectToDrawableRect(Rect drawableRect) {
+        int canvasWidth = this.drawerView.canvas.getWidth();
+        int canvasHeight = this.drawerView.canvas.getHeight();
+        int newX = (int) ((drawableRect.left / MAP_SIZE_CONSTANT_X) * canvasWidth);
+        int newX2 = (int) ((drawableRect.right / MAP_SIZE_CONSTANT_X) * canvasWidth);
+        int newY = (int) ((drawableRect.top / MAP_SIZE_CONSTANT_Y) * canvasHeight);
+        int newY2 = (int) ((drawableRect.bottom / MAP_SIZE_CONSTANT_Y) * canvasHeight);
+        Rect after = new Rect(newX, newY, newX2, newY2);
+        return after;
+    }
+
+    private class CustomImageView extends AppCompatImageView implements View.OnTouchListener {
+
+        private List<DrawableDrawerRect> drawableRectList = new ArrayList<>();
+        private Canvas canvas;
+        private Paint paint;
+
+        private Bitmap drawableBitmap;
+        private Bitmap backgroundBitmap;
+
+        private Set<DrawableDrawerRect> selectedDrawers = new HashSet<>();
+
+
+        public CustomImageView(Context context, byte[] image, int width, int height) {
+            super(context);
+            drawableBitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            drawableBitmap = Bitmap.createScaledBitmap(drawableBitmap, width, height, false);
+
+            backgroundBitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            backgroundBitmap = Bitmap.createScaledBitmap(backgroundBitmap, width, height, false);
+
+            canvas = new Canvas(drawableBitmap);
+            paint = new Paint();
+            paint.setColor(Color.argb(150, 150, 150, 150));
+
+            this.setImageBitmap(drawableBitmap);
+            this.setOnTouchListener(this);
+        }
+
+        public void refresh() {
+            this.updateCanvas();
+            this.invalidate();
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            //Log.i("onTouch", "onTouch");
+            int action = event.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+
+                    int downx = ((int) event.getX());
+                    int downy = ((int) event.getY());
+                    Log.i("TableActivity", "TOUCH ACTION_DOWN x:" + downx + ", y:" + downy);
+
+                    for (DrawableDrawerRect drawableDrawerRect : drawableRectList) {
+                        Log.i("DrawableDrawerRect", "x:" + drawableDrawerRect.rect.left + ", y:" + drawableDrawerRect.rect.top);
+                        if (drawableDrawerRect.contains(downx, downy)) {
+                            if (selectedDrawers.contains(drawableDrawerRect)) {
+                                Log.i("misc", "selected: " + drawableDrawerRect);
+                                selectedDrawers.remove(drawableDrawerRect);
+                            } else {
+                                Log.i("misc", "deselected: " + drawableDrawerRect);
+                                selectedDrawers.add(drawableDrawerRect);
+                            }
+                        }
+                    }
+                    clearAndFillTableWithItems();
+                    refresh();
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+
+        private void updateCanvas() {
+            //Log.i("method called", "updateCanvas");
+            canvas.drawColor(Color.LTGRAY);
+            canvas.drawBitmap(backgroundBitmap, 0, 0, null);
+
+            for (TableActivity.DrawableDrawerRect d : drawableRectList) {
+                if (selectedDrawers.contains(d)) {
+                    d.paint.setColor(Color.argb(150, 200, 50, 50));
+                } else {
+                    d.paint.setColor(Color.argb(150, 150, 150, 150));
+                }
+                canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, d.paint);
+            }
+        }
     }
 
 }

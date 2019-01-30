@@ -35,12 +35,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_table">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="174dp"
-                android:layout_height="179dp"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/ic_testimg5" />
+            <LinearLayout
+                android:id="@+id/linearlayout_table_drawer"
+                android:layout_width="400px"
+                android:layout_height="400px"
+                android:orientation="vertical"></LinearLayout>
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
