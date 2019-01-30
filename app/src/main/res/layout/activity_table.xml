@@ -16,45 +16,45 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/label_shelf" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_table">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_table_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_table"
-        app:layout_constraintVertical_bias="0.498">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.897">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_table">
+            android:layout_gravity="center_horizontal">
 
-            <LinearLayout
-                android:id="@+id/linearlayout_table_drawer"
-                android:layout_width="400px"
-                android:layout_height="400px"
-                android:orientation="vertical"></LinearLayout>
+            <TableLayout
+                android:id="@+id/table_shelf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal">
-
-                <TableLayout
-                    android:id="@+id/table_shelf"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </TableLayout>
-            </HorizontalScrollView>
-
-        </LinearLayout>
+            </TableLayout>
+        </HorizontalScrollView>
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
