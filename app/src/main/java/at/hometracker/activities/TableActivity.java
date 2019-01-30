@@ -206,20 +206,24 @@ public class TableActivity extends AppCompatActivity {
 
     private void clearAndFetchFromDatabase() {
         new DatabaseTask(this, DatabaseMethod.SELECT_ITEMS_FOR_SHELF, (item_task, item_result) -> {
-            if (item_result == null || item_result.isEmpty() || item_result.startsWith(PHP_ERROR_PREFIX))
+            if (item_result == null || item_result.startsWith(PHP_ERROR_PREFIX))
                 return;
 
             unfilteredItems.clear();
-            for (String row : item_result.split(PHP_ROW_SPLITTER)){
-                unfilteredItems.add(new Item(row));
+            if (!item_result.isEmpty()) {
+                for (String row : item_result.split(PHP_ROW_SPLITTER)){
+                    unfilteredItems.add(new Item(row));
+                }
             }
             new DatabaseTask(this, DatabaseMethod.SELECT_KEYWORDS_FOR_SHELF, (kw_task, kw_result) -> {
-                if (kw_result == null || kw_result.isEmpty() || kw_result.startsWith(PHP_ERROR_PREFIX))
+                if (kw_result == null || kw_result.startsWith(PHP_ERROR_PREFIX))
                     return;
 
                 keywords.clear();
-                for (String row : kw_result.split(PHP_ROW_SPLITTER)) {
-                    keywords.add(new Keyword(row));
+                if (!kw_result.isEmpty()) {
+                    for (String row : kw_result.split(PHP_ROW_SPLITTER)) {
+                        keywords.add(new Keyword(row));
+                    }
                 }
                 assignKeywordsToUnfilteredItems();
                 clearAndFillTableWithItems();
@@ -258,6 +262,8 @@ public class TableActivity extends AppCompatActivity {
 
             boolean isInSelectedDrawer = false;
             if (containsSearchString) {
+                Log.v("misc", "drawers size: " + selectedDrawers.size());
+
                 if (selectedDrawers.size() == 0) {
                     isInSelectedDrawer = true;  //no drawers selected --> no filtering
                 }
@@ -281,8 +287,10 @@ public class TableActivity extends AppCompatActivity {
         tableLayout.removeAllViews();
         LayoutInflater inflater = getLayoutInflater();
 
-        addTableHeader();
         filterItems();
+        if (filteredItems.size() == 0)
+            return;
+        addTableHeader();
 
         for (int i = 0; i < filteredItems.size(); i++){
             Item item = filteredItems.get(i);
