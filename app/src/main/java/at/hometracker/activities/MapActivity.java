@@ -99,7 +99,7 @@ public class MapActivity extends AppCompatActivity {
         mapHeight = dh - buttonBarHeight;
 
 
-        new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP_WITHOUT_PICTURE, (task, result) -> {
+        new DatabaseTask(this, DatabaseMethod.SELECT_SHELVES_FOR_GROUP, (task, result) -> {
             if (result == null || result.isEmpty()) {
                 return;
             }
@@ -129,6 +129,7 @@ public class MapActivity extends AppCompatActivity {
 
                 DrawableRect rect = new DrawableRect(convertedRect.left, convertedRect.top, convertedRect.right, convertedRect.bottom);
                 rect.setName(s.name);
+                rect.setShelf(s);
 
                 if (s.shelf_id == shelf_id) {
                     Paint paint = rect.getPaint();
@@ -258,6 +259,7 @@ public class MapActivity extends AppCompatActivity {
         private Rect rect;
         private String name;
         private Paint paint;
+        private Shelf shelf;
 
         public DrawableRect(int x, int y, int x2, int y2) {
             this.rect = createRectForPoints(x, y, x2, y2);
@@ -273,6 +275,10 @@ public class MapActivity extends AppCompatActivity {
 
         public boolean intersects(int x, int y, int x2, int y2) {
             return Rect.intersects(this.rect, createRectForPoints(x, y, x2, y2));
+        }
+
+        public boolean contains(int x, int y) {
+            return rect.contains(x, y);
         }
 
         private Rect createRectForPoints(int x, int y, int x2, int y2) {
@@ -313,6 +319,10 @@ public class MapActivity extends AppCompatActivity {
 
         public void setPaint(Paint paint) {
             this.paint = paint;
+        }
+
+        public void setShelf(Shelf shelf){
+            this.shelf = shelf;
         }
     }
 
@@ -370,7 +380,6 @@ public class MapActivity extends AppCompatActivity {
             //Log.i("method called", "updateCanvas");
             canvas.drawColor(Color.LTGRAY);
 
-
             for (DrawableRect d : drawableRectList) {
                 canvas.drawRect(d.rect.left, d.rect.top, d.rect.right, d.rect.bottom, d.paint);
 
@@ -381,11 +390,6 @@ public class MapActivity extends AppCompatActivity {
                 textPaint.setTextSize(35);
 
                 canvas.drawText(d.getName(), d.rect.left + 10, (d.rect.top + d.rect.bottom) / 2, textPaint);
-
-                if (d.imageData != null) { // TODO remove, used for debugging
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(d.imageData, 0, d.imageData.length);
-                    canvas.drawBitmap(bitmap, d.rect.left, d.rect.top, null);
-                }
 
             }
         }
@@ -429,6 +433,16 @@ public class MapActivity extends AppCompatActivity {
                         break;
                     default:
                         break;
+                }
+            }else{
+                for (MapActivity.DrawableRect drawableDrawerRect : drawableRectList) {
+                    if (drawableDrawerRect.contains(downx, downy)) {
+                        if(drawableDrawerRect.shelf != null){
+                            Intent shelfIntent = new Intent(MapActivity.this, TableActivity.class);
+                            shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF, drawableDrawerRect.shelf);
+                            startActivity(shelfIntent);
+                        }
+                    }
                 }
             }
         }

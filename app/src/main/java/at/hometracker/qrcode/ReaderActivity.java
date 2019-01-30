@@ -44,19 +44,23 @@ public class ReaderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         String qrCodeDecoded = result.getContents();
-        Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+        if(qrCodeDecoded != null){
+            Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+            int shelf_id = Integer.parseInt("0"+qrCodeDecoded.replace("shelf_",""));
 
-        int shelf_id = Integer.parseInt("0"+qrCodeDecoded.replace("shelf_",""));
+            new DatabaseTask(this, DatabaseMethod.SELECT_SHELF, (task, taskResult) -> {
+                if (taskResult == null || taskResult.isEmpty())
+                    return;
+                Shelf shelf = new Shelf(taskResult);
 
-        new DatabaseTask(this, DatabaseMethod.SELECT_SHELF, (task, taskResult) -> {
-            if (taskResult == null || taskResult.isEmpty())
-                return;
-            Shelf shelf = new Shelf(taskResult);
-
-            Intent shelfIntent = new Intent(this, TableActivity.class);
-            shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF,shelf);
-            startActivity(shelfIntent);
+                Intent shelfIntent = new Intent(this, TableActivity.class);
+                shelfIntent.putExtra(Constants.INTENT_EXTRA_SHELF,shelf);
+                startActivity(shelfIntent);
+                finish();
+            }).execute(shelf_id);
+        }else{
             finish();
-        }).execute(shelf_id);
+        }
+
     }
 }
