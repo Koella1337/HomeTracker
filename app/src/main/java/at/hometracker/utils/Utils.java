@@ -23,6 +23,10 @@ import static at.hometracker.shared.Constants.*;
 
 public class Utils {
 
+    public static int clamp(int number, int min, int max) {
+        return Math.min(max, Math.max(min, number));
+    }
+
     public static boolean validateEditTexts(AppCompatActivity originActivity, EditText... textfields) {
         for (EditText txt : textfields) {
             if (txt.getInputType() == (InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT)) {
@@ -34,7 +38,7 @@ public class Utils {
             }
 
             String str = txt.getText().toString();
-            if (str.length() < 4 || str.length() > 64 || !str.matches("[a-zA-Z0-9 -_.]*")) {
+            if (str.length() < 4 || str.length() > 64 || !str.matches("[a-zA-Z0-9 \\-_./]*")) {
                 Toast.makeText(originActivity, R.string.toast_edittext_invalid, Toast.LENGTH_LONG).show();
                 return false;
             }

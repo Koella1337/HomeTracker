@@ -49,4 +49,15 @@ public class Keyword extends AbstractDatabaseObject {
                 ", drawer_id=" + drawer_id +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.name.equals(((Keyword) obj).name);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
+
 }

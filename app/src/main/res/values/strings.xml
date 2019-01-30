@@ -25,7 +25,7 @@
     <string name="toast_registration_success">Registration successful!</string>
     <string name="toast_groupcreation_success">"Group created: "</string>
     <string name="toast_groupcreation_failed">Creation failed!</string>
-    <string name="toast_edittext_invalid">All fields must have between 4 and 64 characters and can only contain letters, numbers, spaces, \".\", \"_\" and \"-\".</string>
+    <string name="toast_edittext_invalid">All fields must have between 4 and 64 characters and can only contain letters, numbers, spaces, \".\", \"_\", \"-\" and \"/\".</string>
     <string name="label_new_group">New group</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_ok" translatable="false">OK</string>
@@ -44,4 +44,9 @@
     <string name="toast_invalid_drawer_selection">Please select exactly one drawer on the image!</string>
     <string name="toast_itemcreation_failed">Item creation failed!</string>
     <string name="label_create_drawer">Create drawer</string>
+    <string name="label_keyword">Attribute</string>
+    <string name="format_update_keyword">Attribute \"%s\"</string>
+    <string name="label_value">Value</string>
+    <string name="label_update_keyword">Update attribute</string>
+    <string name="toast_update_keyword_failed">Updating attribute failed!</string>
 </resources>

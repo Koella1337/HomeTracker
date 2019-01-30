@@ -23,7 +23,7 @@
     <string name="toast_registration_success">Registrierung erfolgreich!</string>
     <string name="toast_groupcreation_failed">Erstellung fehlgeschlagen!</string>
     <string name="toast_groupcreation_success">"Gruppe erstellt: "</string>
-    <string name="toast_edittext_invalid">Alle Felder müssen zwischen 4 und 64 Charaktere haben und können nur Zahlen, Buchstaben, Leerzeichen, \".\", \"_\" und \"-\" beinhalten.</string>
+    <string name="toast_edittext_invalid">Alle Felder müssen zwischen 4 und 64 Charaktere haben und können nur Zahlen, Buchstaben, Leerzeichen, \".\", \"_\", \"-\" und \"/\" beinhalten.</string>
     <string name="label_new_group">Neue Gruppe</string>
     <string name="label_cancel">Abbrechen</string>
     <string name="toast_email_invalid">Ungültige E-Mail Adresse!</string>
@@ -40,4 +40,9 @@
     <string name="toast_invalid_drawer_selection">Bitte nur exakt eine Lade am Bild selektieren!</string>
     <string name="toast_itemcreation_failed">Artikel-Erstellung fehlgeschlagen!</string>
     <string name="label_create_drawer">Lade erstellen</string>
+    <string name="label_keyword">Eigenschaft</string>
+    <string name="format_update_keyword">Eigenschaft \"%s\"</string>
+    <string name="label_value">Wert</string>
+    <string name="label_update_keyword">Eigenschaft aktualisieren</string>
+    <string name="toast_update_keyword_failed">Eigenschafts-Aktualisierung fehlgeschlagen!</string>
 </resources>

@@ -7,20 +7,20 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:title="@string/label_search"
-        app:showAsAction="always"></item>
+        app:showAsAction="always" />
 
     <!-- CAMERA -->
     <item
         android:id="@+id/action_camera"
         android:icon="@drawable/ic_camera"
         android:title="@string/label_camera"
-        app:showAsAction="always"></item>
+        app:showAsAction="always" />
 
     <!-- PROFILE -->
     <item
         android:id="@+id/action_create_shelf"
         android:title="@string/label_create_shelf"
-        app:showAsAction="never"></item>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_profile"
         app:showAsAction="never"

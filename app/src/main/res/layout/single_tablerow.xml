@@ -35,7 +35,8 @@
             android:focusable="true"
             android:ems="10"
             android:inputType="number"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:imeOptions="actionDone" />
 
         <TextView
             android:id="@+id/row_btn_plus"
