@@ -34,8 +34,6 @@
         <activity android:name=".qrcode.QRCodeMainActivity" />
         <activity android:name=".qrcode.GeneratorActivity" />
         <activity android:name=".qrcode.ReaderActivity" />
-        <activity android:name=".activities.ShelfActivity" />
-        <activity android:name=".activities.ClickableImageTestActivity" />
         <activity android:name=".activities.FingerPaintActivity_DELETEME" />
         <activity android:name=".activities.CreateDrawerActivity" />
 
