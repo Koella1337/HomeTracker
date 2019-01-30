@@ -25,8 +25,6 @@ import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.Group;
-import at.hometracker.database.datamodel.Shelf;
-import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.FileUtils;
 import at.hometracker.utils.Utils;
@@ -161,38 +159,6 @@ public class GroupSelectionActivity extends AppCompatActivity {
         startActivity(groupIntent);
     }
 
-    public void openDatabaseActivity(View view){
-        Intent intent = new Intent(this, DatabaseActivity.class);
-        startActivity(intent);
-    }
 
-    public void openQRCodeActivity(View view){
-        Intent intent = new Intent(this, QRCodeMainActivity.class);
-        startActivity(intent);
-    }
-
-    public void openClickableAreaActivity(View view){
-        Intent intent = new Intent(this, FingerPaintActivity_DELETEME.class);
-        startActivity(intent);
-    }
-
-    public void openTouchDrawActivity(View view){
-        Intent intent = new Intent(GroupSelectionActivity.this, MapActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_GROUP_ID, 12);
-        startActivity(intent);
-    }
-
-    public void openTableActivity(View view) {
-        Intent intent = new Intent(GroupSelectionActivity.this, TableActivity.class);
-
-        new DatabaseTask(this, DatabaseMethod.SELECT_SHELF, (task, result) -> {
-            if (result == null || result.isEmpty())
-                return;
-            Shelf shelf = new Shelf(result);
-            intent.putExtra(Constants.INTENT_EXTRA_SHELF, shelf);
-            intent.putExtra(Constants.INTENT_EXTRA_GROUP, new Group(12, "omas", null, null, null));
-            startActivity(intent);
-        }).execute(61);
-    }
 
 }

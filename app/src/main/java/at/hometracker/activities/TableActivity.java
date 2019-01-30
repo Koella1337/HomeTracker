@@ -88,7 +88,9 @@ public class TableActivity extends AppCompatActivity {
         shelf = (Shelf) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_SHELF);
         group = (Group) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_GROUP);
         if (shelf == null) throw new RuntimeException("Invalid id on TableActivity creation!");
-        myToolbar.setTitle(group.name + " > " + shelf.name);
+        if(group != null && shelf != null){
+            myToolbar.setTitle(group.name + " > " + shelf.name);
+        }
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);

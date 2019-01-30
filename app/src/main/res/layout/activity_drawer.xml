@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".activities.DrawerActivity_DELETEME">
+    tools:context=".activities.CreateDrawerActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout_drawer_buttons"

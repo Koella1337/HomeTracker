@@ -16,7 +16,6 @@ import at.hometracker.R;
 import at.hometracker.database.DatabaseMethod;
 import at.hometracker.database.DatabaseTask;
 import at.hometracker.database.datamodel.User;
-import at.hometracker.qrcode.QRCodeMainActivity;
 import at.hometracker.shared.Constants;
 import at.hometracker.utils.PasswordUtils;
 import at.hometracker.utils.SecurePassword;
