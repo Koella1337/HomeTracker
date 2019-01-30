@@ -45,4 +45,5 @@
     <string name="label_value">Wert</string>
     <string name="label_update_keyword">Eigenschaft aktualisieren</string>
     <string name="toast_update_keyword_failed">Eigenschafts-Aktualisierung fehlgeschlagen!</string>
+    <string name="label_map">Karte</string>
 </resources>

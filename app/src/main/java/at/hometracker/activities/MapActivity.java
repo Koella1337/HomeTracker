@@ -215,7 +215,6 @@ public class MapActivity extends AppCompatActivity {
                     else
                         Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_failed, Toast.LENGTH_LONG).show();
                 } else {
-
                     Intent createDrawerIntent = new Intent(this, CreateDrawerActivity.class);
                     createDrawerIntent.putExtra(Constants.INTENT_EXTRA_IMAGE, imageData);
                     int createdShelfId = Integer.parseInt(result);
@@ -224,9 +223,6 @@ public class MapActivity extends AppCompatActivity {
                     Toast.makeText(MapActivity.this, R.string.toast_shelfcreation_success, Toast.LENGTH_LONG).show();
                 }
             }).execute(created.getName(), group_id, convertedShelfRect.left, convertedShelfRect.top, convertedShelfRect.right - convertedShelfRect.left, convertedShelfRect.bottom - convertedShelfRect.top, new ByteArrayInputStream(imageData));
-
-            // (name, group_id, posX, posY, sizeX, sizeY, pic)
-
             created = null;
         } else {
             Log.i("onActivityResult not ok", "requestCode " + requestCode);

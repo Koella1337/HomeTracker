@@ -34,7 +34,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -358,8 +357,8 @@ public class TableActivity extends AppCompatActivity {
         TableRow header = new TableRow(this);
         header.setBackgroundResource(R.color.table_color_dark_gray);
 
-        TextView nameHeader = createTableHeaderTextView(getString(R.string.label_item));
-        TextView amountHeader = createTableHeaderTextView(getString(R.string.label_amount));
+        TextView nameHeader = createKeywordHeaderTextView(getString(R.string.label_item));
+        TextView amountHeader = createKeywordHeaderTextView(getString(R.string.label_amount));
 
         makeViewClickable(nameHeader);
         nameHeader.setOnClickListener(view -> {
@@ -406,7 +405,7 @@ public class TableActivity extends AppCompatActivity {
         for (Keyword kw : keywords) {
             if (keywordColumns.contains(kw))
                 continue;
-            header.addView(createTableHeaderTextView(kw.name));
+            header.addView(createKeywordHeaderTextView(kw.name));
             keywordColumns.add(kw);
         }
 
@@ -414,7 +413,7 @@ public class TableActivity extends AppCompatActivity {
         tableLayout.addView(header, params);
     }
 
-    private TextView createTableHeaderTextView(String keywordName) {
+    private TextView createKeywordHeaderTextView(String keywordName) {
         TextView textView = new TextView(this);
         textView.setText(keywordName);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
@@ -556,6 +555,7 @@ public class TableActivity extends AppCompatActivity {
 
     private void setPrimaryDrawer(int drawer_id) {
         //TODO: Omas !!
+    }
 
     private List<Drawer> getSelectedDrawers() {
         List<Drawer> selectedDrawersFromView = new ArrayList<>();

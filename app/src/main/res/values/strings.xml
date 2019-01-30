@@ -49,4 +49,5 @@
     <string name="label_value">Value</string>
     <string name="label_update_keyword">Update attribute</string>
     <string name="toast_update_keyword_failed">Updating attribute failed!</string>
+    <string name="label_map">Map</string>
 </resources>

@@ -184,9 +184,17 @@ public class GroupSelectionActivity extends AppCompatActivity {
 
     public void openTableActivity(View view) {
         Intent intent = new Intent(GroupSelectionActivity.this, TableActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_SHELF, new Shelf(61, "test", 12, 0, 0, 0, 0, null));
-        intent.putExtra(Constants.INTENT_EXTRA_GROUP, new Group(12, "omas", null, null, null));
-        startActivity(intent);
+
+        new DatabaseTask(this, DatabaseMethod.SELECT_SHELF, (task, result) -> {
+            if (result == null || result.isEmpty())
+                return;
+            Shelf shelf = new Shelf(result);
+            intent.putExtra(Constants.INTENT_EXTRA_SHELF, shelf);
+            intent.putExtra(Constants.INTENT_EXTRA_GROUP, shelf.group_id);
+            startActivity(intent);
+        }).execute(61);
+
+
     }
 
 }

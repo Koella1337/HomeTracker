@@ -108,6 +108,11 @@ public class GroupActivity extends AppCompatActivity {
                 Intent scanIntent = new Intent(this, ReaderActivity.class);
                 startActivity(scanIntent);
                 return true;
+            case R.id.action_map:
+                Intent mapIntent = new Intent(this, MapActivity.class);
+                mapIntent.putExtra(Constants.INTENT_EXTRA_GROUP_ID, group_id);
+                this.startActivity(mapIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
