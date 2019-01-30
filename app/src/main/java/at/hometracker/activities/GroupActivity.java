@@ -101,9 +101,6 @@ public class GroupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_create_shelf:
-                CameraUtils.requestPicture(this);
-                return true;
             case R.id.action_camera:
                 Intent scanIntent = new Intent(this, ReaderActivity.class);
                 startActivity(scanIntent);
@@ -118,34 +115,7 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK) {
-            Log.v("misc", "Non-OK resultCode! (" + resultCode + ")");
-            return;
-        }
-
-        switch (requestCode) {
-            case Constants.REQUESTCODE_IMAGE_CAPTURE:
-                String shelfName = "Test Shelf " + new Random().nextInt(10000);
-
-                new DatabaseTask(GroupActivity.this, DatabaseMethod.INSERT_SHELF, (task, result) -> {
-                    if (result == null || result.startsWith(PHP_ERROR_PREFIX)) {
-                        if (result.equals(Constants.FILE_TOO_LARGE_ERROR))
-                            Toast.makeText(GroupActivity.this, R.string.toast_file_too_large, Toast.LENGTH_LONG).show();
-                        else
-                            Toast.makeText(GroupActivity.this, R.string.toast_shelfcreation_failed, Toast.LENGTH_LONG).show();
-                    } else
-                        Toast.makeText(GroupActivity.this, R.string.toast_shelfcreation_success, Toast.LENGTH_LONG).show();
-                }).execute(shelfName, group_id, CameraUtils.getPictureAsInputStream(this));
-                break;
-            default:
-                System.out.println("Unrecognized requestcode: " + requestCode);
-                break;
-        }
-    }
 
 
 }

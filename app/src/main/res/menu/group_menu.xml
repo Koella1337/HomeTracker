@@ -23,11 +23,13 @@
         android:title="@string/label_camera"
         app:showAsAction="always" />
 
-    <!-- PROFILE -->
+    <!-- CREATE SHELF -->
     <item
         android:id="@+id/action_create_shelf"
         android:title="@string/label_create_shelf"
         app:showAsAction="never" />
+
+    <!-- PROFILE -->
     <item
         android:id="@+id/action_profile"
         app:showAsAction="never"
