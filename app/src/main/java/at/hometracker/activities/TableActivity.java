@@ -206,11 +206,17 @@ public class TableActivity extends AppCompatActivity {
 
     private void clearAndFetchFromDatabase() {
         new DatabaseTask(this, DatabaseMethod.SELECT_ITEMS_FOR_SHELF, (item_task, item_result) -> {
+            if (item_result == null || item_result.isEmpty() || item_result.startsWith(PHP_ERROR_PREFIX))
+                return;
+
             unfilteredItems.clear();
             for (String row : item_result.split(PHP_ROW_SPLITTER)){
                 unfilteredItems.add(new Item(row));
             }
             new DatabaseTask(this, DatabaseMethod.SELECT_KEYWORDS_FOR_SHELF, (kw_task, kw_result) -> {
+                if (kw_result == null || kw_result.isEmpty() || kw_result.startsWith(PHP_ERROR_PREFIX))
+                    return;
+
                 keywords.clear();
                 for (String row : kw_result.split(PHP_ROW_SPLITTER)) {
                     keywords.add(new Keyword(row));
